@@ -48,7 +48,7 @@ Set `PUBLICATION_MODE=production` and `SITE_URL` to the canonical public HTTPS U
 
 ## Publishing flow
 
-The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages.yml`, targeting `berhbro/DisplayWebpage`. The repository stays private while the laboratory verifies its identity and content; the team plans to make it public afterward. Push this source, including `package-lock.json`. After verification, change the repository visibility to public and choose **GitHub Actions** in **Settings → Pages**. The workflow defaults to `https://berhbro.github.io/DisplayWebpage/`; set a repository `SITE_URL` variable only if using a custom domain. Set `SANITY_PROJECT_ID` and optionally `SANITY_DATASET` as repository variables; set `SANITY_READ_TOKEN` as a repository secret only for a private dataset. The URL path determines Astro's base path, so repository pages and custom-domain root pages both work.
+The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages.yml`, targeting the now-public `berhbro/DisplayWebpage` repository. GitHub Pages is not enabled yet. After the laboratory verifies its identity and content, choose **GitHub Actions** in **Settings → Pages**. The workflow defaults to `https://berhbro.github.io/DisplayWebpage/`; set a repository `SITE_URL` variable only if using a custom domain. Set `SANITY_PROJECT_ID` and optionally `SANITY_DATASET` as repository variables; set `SANITY_READ_TOKEN` as a repository secret only for a private dataset. The URL path determines Astro's base path, so repository pages and custom-domain root pages both work.
 
 The workflow runs **manually** from the Actions tab or via a `sanity-published` repository-dispatch event, and always builds with `PUBLICATION_MODE=production`. It cannot deploy the preview content: missing verified Sanity content or an unset URL stops the build. Once the site is approved, run the workflow and check the GitHub Pages URL. To automate future edits, configure a Sanity webhook for published changes to POST `{"event_type":"sanity-published"}` to GitHub's repository-dispatch endpoint using a carefully scoped GitHub token; keep the token in Sanity's private webhook settings. Test one edit, publication, rebuild and live page update before announcing the site.
 
@@ -126,7 +126,7 @@ npm run dev
 
 ## 发布流程
 
-前端已在 `.github/workflows/deploy-pages.yml` 中准备好 **GitHub Pages** 发布流程，目标仓库为 `berhbro/DisplayWebpage`。实验室核实名称和内容期间，仓库保持私有；核实完成后再改为公开。推送源代码时须包含 `package-lock.json`。核实完成后，在仓库的 **Settings → Pages** 中选择 **GitHub Actions** 作为构建来源。工作流默认使用 `https://berhbro.github.io/DisplayWebpage/`；仅在使用自定义域名时设置仓库变量 `SITE_URL`。将 `SANITY_PROJECT_ID` 及可选的 `SANITY_DATASET` 设置为仓库变量。仅在使用私有数据集时，把 `SANITY_READ_TOKEN` 设置为仓库 Secret。程序会根据网址中的路径自动处理 GitHub 项目页或自定义域名根路径。
+前端已在 `.github/workflows/deploy-pages.yml` 中准备好 **GitHub Pages** 发布流程，目标仓库 `berhbro/DisplayWebpage` 现已公开，但尚未启用 Pages。实验室核实名称和内容后，在仓库的 **Settings → Pages** 中选择 **GitHub Actions** 作为构建来源。工作流默认使用 `https://berhbro.github.io/DisplayWebpage/`；仅在使用自定义域名时设置仓库变量 `SITE_URL`。将 `SANITY_PROJECT_ID` 及可选的 `SANITY_DATASET` 设置为仓库变量。仅在使用私有数据集时，把 `SANITY_READ_TOKEN` 设置为仓库 Secret。程序会根据网址中的路径自动处理 GitHub 项目页或自定义域名根路径。
 
 工作流可从 Actions 页面**手动运行**，也支持通过 `sanity-published` 仓库分发事件触发，且始终以 `PUBLICATION_MODE=production` 构建。若 Sanity 中缺少经核实的内容或网址未设置，构建会停止，不会把预览资料部署到公开网站。资料获批后，运行工作流并检查 GitHub Pages 网址。若要让后续内容发布自动重建，可为已发布内容配置 Sanity webhook，使用权限范围尽量小的 GitHub 令牌，向仓库分发接口发送 `{"event_type":"sanity-published"}`；令牌只保存在 Sanity 私有的 webhook 设置中。在 webhook 配好前，内容更新后需手动重跑工作流。对外公布网站前，应实际测试一次内容编辑、发布、重新构建及线上页面更新的完整流程。
 
