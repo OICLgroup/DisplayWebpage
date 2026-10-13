@@ -18,23 +18,23 @@ npm run dev
 
 Open the local URL printed by Astro. `npm run build` creates a preview build in `dist/`; `npm run preview` serves it locally.
 
-## Connect Sanity
+## Sanity content studio
 
-1. Create a Sanity project and a `production` dataset owned by the laboratory.
-2. Copy `.env.example` to `.env` in both the repository root and `studio/`.
-3. Set `SANITY_PROJECT_ID` in the website root and `SANITY_STUDIO_PROJECT_ID` in `studio/` to the same project ID. Keep the dataset names in sync.
-   For a private dataset, set `SANITY_READ_TOKEN` only in the website build environment; never expose it as a public variable.
-4. Install and run the editing studio:
+The Sanity project is **`gd1we79o`**, with a public `production` dataset. The editing interface is hosted at [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/); sign in with an account granted access to the project. The dataset is currently empty. Published documents in a public dataset can be queried publicly, so keep unverified material as drafts.
+
+1. Copy `.env.example` to `.env` in both the repository root and `studio/`. Set root `SANITY_PROJECT_ID=gd1we79o` and Studio `SANITY_STUDIO_PROJECT_ID=gd1we79o`; keep both dataset names as `production`. The local `.env` files are ignored by Git.
+2. To run the editing studio locally:
 
    ```powershell
    npm --prefix studio install
    npm run studio:dev
    ```
 
-5. In Studio, open **Site settings** and enter verified facts. Add Research themes, Publications and People. Add News only when a real update exists. Uploaded images require meaningful alternative text.
-6. Sanity project settings must allow the deployed website's origin for any future browser-side features. The current website reads published content only during its server-side build.
+3. In Studio, open **Site settings** and enter verified facts. Add Research themes, Publications and People. Add News only when a real update exists. Uploaded images require meaningful alternative text.
+4. After changing the Studio schema or editor interface, run `npm run studio:deploy` from the repository root to rebuild and update the hosted Studio. This requires an authorized Sanity CLI login. Ordinary content edits are saved directly in Sanity and do not require a Studio redeploy.
+5. Sanity project settings must allow the deployed website's origin for any future browser-side features. The current website reads published content only during its server-side build.
 
-The website reads published Sanity content during each build. Keep draft content unpublished until verified. The dataset must allow the build process to read published documents; configure a server-side read token if the laboratory chooses a private dataset.
+The website reads published Sanity content during each build. Keep draft content unpublished until verified. The current public dataset requires no read token. If the laboratory later switches to a private dataset, configure `SANITY_READ_TOKEN` only in the website build environment, never as a public variable.
 
 ## Minimum verified content before launch
 
@@ -52,11 +52,11 @@ The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages
 
 The workflow runs **manually** from the Actions tab or via a `sanity-published` repository-dispatch event, and always builds with `PUBLICATION_MODE=production`. It cannot deploy the preview content: missing verified Sanity content or an unset URL stops the build. Once the site is approved, run the workflow and check the GitHub Pages URL. To automate future edits, configure a Sanity webhook for published changes to POST `{"event_type":"sanity-published"}` to GitHub's repository-dispatch endpoint using a carefully scoped GitHub token; keep the token in Sanity's private webhook settings. Test one edit, publication, rebuild and live page update before announcing the site.
 
-The GitHub Pages workflow is prepared, but no Sanity account is connected. The team must supply the project credentials, verified content and approved images before public launch. GitHub Pages availability and speed in mainland China should be measured from real user networks; hosting there does not guarantee regional performance.
+GitHub Pages is configured to build from GitHub Actions, and the repository variable `SANITY_PROJECT_ID` points to the Sanity project. The site has **not** been deployed because the verified minimum content is still missing. The team must supply verified content and approved images before public launch. GitHub Pages availability and speed in mainland China should be measured from real user networks; hosting there does not guarantee regional performance.
 
 ## Dependency note
 
-The website production dependency audit currently reports no findings. Sanity Studio 6.18.0 pulls in 17 reported transitive dependency advisories (9 high, 8 moderate), largely through its CLI and build tools. `npm audit` offers only a breaking downgrade to Sanity 5.14.1 as an automatic fix. Review updated Sanity releases and rerun the audit before deploying Studio; do not apply that downgrade blindly.
+The website production dependency audit currently reports no findings. Sanity Studio 6.18.0 pulls in 17 reported transitive dependency advisories (9 high, 8 moderate), largely through its CLI and build tools. `npm audit` offers only a breaking downgrade to Sanity 5.14.1 as an automatic fix. Review updated Sanity releases and rerun the audit when updating Studio; do not apply that downgrade blindly.
 
 ## Preview source references
 
@@ -97,22 +97,23 @@ npm run dev
 
 在浏览器中打开 Astro 输出的本地网址。`npm run build` 会在 `dist/` 中生成预览版；`npm run preview` 可在本地查看构建结果。
 
-## 连接 Sanity
+## Sanity 内容后台
 
-1. 由实验室创建 Sanity 项目和名为 `production` 的数据集。
-2. 分别在仓库根目录和 `studio/` 中，将 `.env.example` 复制为 `.env`。
-3. 将根目录的 `SANITY_PROJECT_ID` 和 `studio/` 中的 `SANITY_STUDIO_PROJECT_ID` 设为同一个项目 ID，并保持数据集名称一致。如果使用私有数据集，仅在网站构建环境中设置 `SANITY_READ_TOKEN`，不要将其设为公开变量。
-4. 安装并启动内容编辑后台：
+Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。可在 [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/) 登录并编辑；账号需拥有该项目权限。数据集目前为空。公开数据集里已发布的文档可被公众查询，未经核实的资料请只存为草稿。
+
+1. 分别在仓库根目录和 `studio/` 中，将 `.env.example` 复制为 `.env`。根目录填写 `SANITY_PROJECT_ID=gd1we79o`，Studio 填写 `SANITY_STUDIO_PROJECT_ID=gd1we79o`；两个数据集名称均保持 `production`。本地 `.env` 文件不会提交到 Git。
+2. 如果需要在本地运行编辑后台：
 
    ```powershell
    npm --prefix studio install
    npm run studio:dev
    ```
 
-5. 在 Studio 的 **Site settings** 中填写已核实的信息，再添加研究方向、论文和成员。确有更新时才添加新闻。上传图片时须填写有意义的替代文字。
-6. 若将来添加浏览器端读取 Sanity 的功能，需要在 Sanity 项目设置中允许已部署网站的来源地址。当前网站仅在服务端构建时读取已发布的内容。
+3. 在 Studio 的 **Site settings** 中填写已核实的信息，再添加研究方向、论文和成员。确有更新时才添加新闻。上传图片时须填写有意义的替代文字。
+4. 如果修改了 Studio 的内容结构或编辑界面，在仓库根目录运行 `npm run studio:deploy`，重新构建并更新线上 Studio；这需要已授权的 Sanity CLI 登录。平常编辑资料直接存入 Sanity，无需重新部署 Studio。
+5. 若将来添加浏览器端读取 Sanity 的功能，需要在 Sanity 项目设置中允许已部署网站的来源地址。当前网站仅在服务端构建时读取已发布的内容。
 
-网站每次构建时都会读取 Sanity 中已发布的内容。资料核实前，请将其保留为草稿。数据集必须允许构建程序读取已发布文档；如果使用私有数据集，应配置仅供服务端使用的读取令牌。
+网站每次构建时都会读取 Sanity 中已发布的内容。资料核实前，请将其保留为草稿。当前公开数据集无需读取令牌。若将来改为私有数据集，只在网站构建环境中设置 `SANITY_READ_TOKEN`，不要将其设为公开变量。
 
 ## 正式上线前的最小核实内容
 
@@ -130,11 +131,11 @@ npm run dev
 
 工作流可从 Actions 页面**手动运行**，也支持通过 `sanity-published` 仓库分发事件触发，且始终以 `PUBLICATION_MODE=production` 构建。若 Sanity 中缺少经核实的内容或网址未设置，构建会停止，不会把预览资料部署到公开网站。资料获批后，运行工作流并检查 GitHub Pages 网址。若要让后续内容发布自动重建，可为已发布内容配置 Sanity webhook，使用权限范围尽量小的 GitHub 令牌，向仓库分发接口发送 `{"event_type":"sanity-published"}`；令牌只保存在 Sanity 私有的 webhook 设置中。在 webhook 配好前，内容更新后需手动重跑工作流。对外公布网站前，应实际测试一次内容编辑、发布、重新构建及线上页面更新的完整流程。
 
-GitHub Pages 工作流已准备好，但尚未连接 Sanity 账号。公开上线前，实验室还需提供项目凭据、核实后的内容和获准使用的图片。GitHub Pages 在中国大陆的实际可用性与速度应通过真实网络测试，不能仅凭托管平台名称保证。
+GitHub Pages 已设置为从 GitHub Actions 构建，仓库变量 `SANITY_PROJECT_ID` 也已指向当前 Sanity 项目。由于最小核实内容尚未齐备，网站**尚未发布**。公开上线前，实验室还需提供经核实的内容和获准使用的图片。GitHub Pages 在中国大陆的实际可用性与速度应通过真实网络测试，不能仅凭托管平台名称保证。
 
 ## 依赖说明
 
-目前网站生产依赖的审计没有发现问题。Sanity Studio 6.18.0 的间接依赖有 17 条审计告警（9 条高风险、8 条中风险），主要来自 CLI 和构建工具。`npm audit` 给出的自动修复方案需要将 Sanity 降级到不兼容的 5.14.1。部署 Studio 前，应检查 Sanity 的后续版本并重新审计，不要直接执行该降级方案。
+目前网站生产依赖的审计没有发现问题。Sanity Studio 6.18.0 的间接依赖有 17 条审计告警（9 条高风险、8 条中风险），主要来自 CLI 和构建工具。`npm audit` 给出的自动修复方案需要将 Sanity 降级到不兼容的 5.14.1。更新 Studio 时应检查 Sanity 的后续版本并重新审计，不要直接执行该降级方案。
 
 ## 预览内容的参考来源
 

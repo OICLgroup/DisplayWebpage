@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "studio:dev": "npm --prefix studio run dev",
-    "studio:build": "npm --prefix studio run build"
+    "studio:build": "npm --prefix studio run build",
+    "studio:deploy": "npm --prefix studio run deploy"
   },
   "dependencies": {
     "@sanity/client": "^8.9.0",
