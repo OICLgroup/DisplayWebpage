@@ -156,10 +156,14 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .research-context { display: grid; grid-template-columns: .86fr 1.14fr; gap: 6%; align-items: center; }
 .research-context h2 { max-width: 570px; margin: 17px 0 20px; font-size: clamp(35px, 3.6vw, 52px); line-height: 1.13; }
 .research-context p { max-width: 540px; color: #555268; font-size: 15px; }
+.research-priorities { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 21px; }
+.research-priorities span { display: inline-block; padding: 8px 12px; border: 1px solid #b9b2e4; color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .research-context .standards-note { margin-top: 24px; padding-top: 15px; border-top: 1px solid #d8d2d0; color: var(--blue); font-size: 13px; font-weight: 700; }
 .research-system { margin: 0; padding: 25px; background: #fff; border: 1px solid var(--line); }
-.research-system a { display: grid; min-height: 290px; place-items: center; }
+.research-system-images { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 14px; }
+.research-system a { display: grid; min-height: 290px; place-items: center; background: #f6f5f3; }
 .research-system img { width: 100%; height: auto; }
+.research-system-images a:last-child img { height: 100%; object-fit: cover; }
 .research-system figcaption, .research-figure figcaption { margin-top: 15px; color: #656176; font-size: 11px; line-height: 1.5; }
 .research-investigator { display: flex; align-items: center; gap: 16px; margin-top: 36px; }
 .research-investigator img { width: 84px; height: 90px; object-fit: cover; object-position: center 20%; }
@@ -326,6 +330,9 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .page-hero h1 { font-size: clamp(52px, 10.5vw, 72px); }
   .research-detail { grid-template-columns: 1fr; }
   .research-detail-art { height: 210px; }
+  .research-system-images { grid-template-columns: 1fr; }
+  .research-system a { min-height: 0; }
+  .research-system-images a:last-child img { max-height: 230px; object-fit: cover; }
   .research-detail > div:nth-child(2) { padding: 30px; }
   .research-figure-row { grid-template-columns: 1fr; }
   .research-figure a { height: 210px; }
