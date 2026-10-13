@@ -23,6 +23,8 @@ jobs:
         uses: actions/checkout@v7
       - name: Build verified static site
         uses: withastro/action@v6
+        with:
+          package-manager: npm@11.16.0
         env:
           PUBLICATION_MODE: production
           SITE_URL: ${{ vars.SITE_URL || 'https://spsp6.github.io/DisplayWebpage/' }}
