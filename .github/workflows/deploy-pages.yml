@@ -25,7 +25,7 @@ jobs:
         uses: withastro/action@v6
         env:
           PUBLICATION_MODE: production
-          SITE_URL: ${{ vars.SITE_URL || 'https://berhbro.github.io/DisplayWebpage/' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://spsp6.github.io/DisplayWebpage/' }}
           SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
           SANITY_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
           SANITY_API_VERSION: '2026-10-01'
