@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import { getSiteContent } from '../lib/content';
+const content = await getSiteContent();
+const { publications } = content;
+const years = [...new Set(publications.map((item) => item.year))].sort((a, b) => b - a);
+---
+<BaseLayout title="Publications" description="Explore OICL publications in optical communications, with links to DOI and original sources." active="publications" content={content}>
+  <section class="page-hero shell"><div class="hero-index"><span class="index-line"></span><span>PUBLICATIONS / OICL</span></div><h1>Ideas made<br /><em>public.</em></h1><p>Peer-reviewed work and other research outputs, organized by year with links to original records.</p></section>
+  <section class="section shell page-content">
+    {years.length > 0 ? <div class="year-groups">{years.map((year) => <section class="year-group" aria-labelledby={`year-${year}`}><h2 id={`year-${year}`}>{year}</h2><div class="publication-list">{publications.filter((item) => item.year === year).map((item) => <PublicationItem publication={item} />)}</div></section>)}</div>
+    : <div class="content-pending"><span class="eyebrow">PUBLICATION RECORD IN PREPARATION</span><h2>Verified work, linked at the source.</h2><p>Publication titles, authors, venues and DOI links will appear here once the laboratory confirms its bibliography.</p><div class="pending-line" aria-hidden="true"><span></span><span></span><span></span></div></div>}
+  </section>
+</BaseLayout>

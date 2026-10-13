@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSiteContent } from '../lib/content';
+import { sitePath } from '../lib/paths';
+const content = await getSiteContent();
+const { themes } = content;
+---
+<BaseLayout title="Research" description="Explore OICL research themes in optical communications." active="research" content={content}>
+  <section class="page-hero shell"><div class="hero-index"><span class="index-line"></span><span>RESEARCH / OICL</span></div><h1>Research shaped<br />by <em>light.</em></h1><p>OICL works in optical communications. This page presents verified research themes and the questions behind them.</p></section>
+  <section class="section shell page-content">
+    {themes.length > 0 ? <div class="research-list">{themes.map((theme, index) => <article class="research-item" id={theme.slug || theme.id}><div class="research-number">{String(index + 1).padStart(2, '0')}</div><div class="research-body"><h2>{theme.title}</h2>{theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}<p class="research-summary">{theme.summary}</p>{theme.detail && <p>{theme.detail}</p>}</div>{theme.imageUrl && <img src={theme.imageUrl} alt={theme.imageAlt || ''} loading="lazy" />}</article>)}</div>
+    : <div class="content-pending"><span class="eyebrow">RESEARCH PROFILE IN PREPARATION</span><h2>Optical communications</h2><p>The laboratory’s specific research themes, methods and project examples will appear here after verification.</p><div class="pending-line" aria-hidden="true"><span></span><span></span><span></span></div></div>}
+  </section>
+  <section class="bottom-cta shell"><span class="eyebrow">EXCHANGE IDEAS</span><h2>Interested in our work?</h2><a class="text-link" href={sitePath('/contact/')}>Contact OICL <span aria-hidden="true">↗</span></a></section>
+</BaseLayout>

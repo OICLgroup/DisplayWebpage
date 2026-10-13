@@ -1,0 +1,43 @@
+name: Publish OICL on GitHub Pages
+
+# No push trigger; release requires a manual run or an authenticated CMS event.
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [sanity-published]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+      - name: Build verified static site
+        uses: withastro/action@v6
+        env:
+          PUBLICATION_MODE: production
+          SITE_URL: ${{ vars.SITE_URL || 'https://berhbro.github.io/DisplayWebpage/' }}
+          SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+          SANITY_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
+          SANITY_API_VERSION: '2026-10-01'
+          SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
