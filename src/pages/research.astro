@@ -1,15 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ResearchVisual from '../components/ResearchVisual.astro';
 import { getSiteContent } from '../lib/content';
 import { sitePath } from '../lib/paths';
 const content = await getSiteContent();
-const { themes } = content;
+const { settings, themes } = content;
+const pi = content.people.find((person) => person.group === 'Professors' || /professor/i.test(person.role));
+const figureSets: Record<string, { src: string; alt: string; caption: string }[]> = {
+  'short-reach-optical-interconnects': [
+    { src: '/images/research/short-reach-system.png', alt: 'Experimental block diagram for short-reach optical interconnects', caption: 'Short-reach optical interconnect test system' },
+    { src: '/images/research/short-reach-measurements.png', alt: 'Short-reach optical link design and measured performance charts', caption: 'Optical link design and measurement' }
+  ],
+  'flexible-optical-switching': [
+    { src: '/images/research/optical-switching-bench.png', alt: 'Optical switching bench with labeled optical components', caption: 'Optical switching laboratory setup' },
+    { src: '/images/research/optical-switching-schematic.png', alt: 'Wavelength selective switch optical schematic and channel arrangement', caption: 'Flexible optical switching schematic' }
+  ],
+  'resilient-optical-networks': [
+    { src: '/images/research/resilient-ocs-topology.png', alt: 'Resilient optical circuit switching topology with redundant connections', caption: 'Resilient optical circuit switching topology' },
+    { src: '/images/research/resilient-recovery-timeline.png', alt: 'Timeline showing optical circuit switch recognition and recovery time', caption: 'Failure recognition and recovery timeline' }
+  ]
+};
 ---
-<BaseLayout title="Research" description="Explore OICL research themes in optical communications." active="research" content={content}>
-  <section class="page-hero shell"><div class="hero-index"><span class="index-line"></span><span>RESEARCH / OICL</span></div><h1>Research shaped<br />by <em>light.</em></h1><p>OICL works in optical communications. This page presents verified research themes and the questions behind them.</p></section>
-  <section class="section shell page-content">
-    {themes.length > 0 ? <div class="research-list">{themes.map((theme, index) => <article class="research-item" id={theme.slug || theme.id}><div class="research-number">{String(index + 1).padStart(2, '0')}</div><div class="research-body"><h2>{theme.title}</h2>{theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}<p class="research-summary">{theme.summary}</p>{theme.detail && <p>{theme.detail}</p>}</div>{theme.imageUrl && <img src={theme.imageUrl} alt={theme.imageAlt || ''} loading="lazy" />}</article>)}</div>
-    : <div class="content-pending"><span class="eyebrow">RESEARCH PROFILE IN PREPARATION</span><h2>Optical communications</h2><p>The laboratory’s specific research themes, methods and project examples will appear here after verification.</p><div class="pending-line" aria-hidden="true"><span></span><span></span><span></span></div></div>}
-  </section>
-  <section class="bottom-cta shell"><span class="eyebrow">EXCHANGE IDEAS</span><h2>Interested in our work?</h2><a class="text-link" href={sitePath('/contact/')}>Contact OICL <span aria-hidden="true">↗</span></a></section>
+<BaseLayout title="Research" description="OICL research in optical interconnects, flexible switching and resilient optical networks." active="research" content={content}>
+  <section class="page-hero shell"><span class="eyebrow">RESEARCH / 研究领域</span><h1>Optics for<br /><em>intelligent infrastructure.</em></h1><p>{settings.officialName || settings.labName}</p>{pi && <p class="research-pi">Principal Investigator: Prof. {pi.name}{pi.chineseName && <span lang="zh-CN"> · {pi.chineseName}教授</span>}</p>}</section>
+  <section class="section shell research-intro"><div><span class="eyebrow">RESEARCH PROFILE</span><h2>Connecting computing through light.</h2></div><div><p>{settings.intro}</p>{settings.chineseIntro && <p class="chinese-paragraph" lang="zh-CN">{settings.chineseIntro}</p>}</div></section>
+  <section class="section section-soft"><div class="shell research-context"><div><span class="eyebrow">APPLICATION SCENARIOS / 应用场景</span><h2>{settings.applicationStatement || 'Optical Systems and Networks for AI and 6G'}</h2>{settings.applicationChinese && <p lang="zh-CN">{settings.applicationChinese}</p>}{settings.networkStandards && <p class="standards-note" lang="zh-CN">{settings.networkStandards}</p>}{pi && <div class="research-investigator"><img src={sitePath('/images/ning-deng-research.jpeg')} alt={`Prof. ${pi.name} in the laboratory presentation`} loading="lazy" /><div><span class="eyebrow">PRINCIPAL INVESTIGATOR</span><strong>Prof. {pi.name}</strong>{pi.chineseName && <span lang="zh-CN">{pi.chineseName}教授</span>}<a class="text-link" href={sitePath(`/people/${pi.slug || 'ning-deng'}/`)}>View profile ↗</a></div></div>}</div><figure class="research-system"><a href={sitePath('/images/research/ai-6g-optical-network.png')} target="_blank" rel="noopener noreferrer" aria-label="Open full-size optical network architecture diagram"><img src={sitePath('/images/research/ai-6g-optical-network.png')} alt="PPT diagram showing AI computing centers, data centers and 5G/6G networks connected through optical networks" loading="lazy" /></a><figcaption>Optical network architecture for AI and 6G · Open image to enlarge</figcaption></figure></div></section>
+  <section class="section section-soft"><div class="shell"><div class="section-heading"><div><span class="eyebrow">THREE RESEARCH AREAS</span><h2>Where we focus</h2></div></div><div class="research-detail-list">
+    {themes.map((theme, index) => <article class="research-detail" id={theme.slug || theme.id}><div class="research-detail-art"><ResearchVisual variant={index} /></div><div><span class="card-index">0{index + 1} / 0{themes.length}</span><h3>{theme.title}</h3>{theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}<p>{theme.summary}</p>{theme.detail && <p>{theme.detail}</p>}</div>{figureSets[theme.slug] && <div class="research-figure-row">{figureSets[theme.slug].map((figure, figureIndex) => { const source = figureIndex === 0 && theme.imageUrl ? theme.imageUrl : sitePath(figure.src); const src = source.startsWith('/') && !source.startsWith(import.meta.env.BASE_URL) ? sitePath(source) : source; return <figure class="research-figure"><a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size image: ${figure.caption}`}><img src={src} alt={figureIndex === 0 ? theme.imageAlt || figure.alt : figure.alt} loading="lazy" /></a><figcaption>{figure.caption} · Open image to enlarge</figcaption></figure>; })}</div>}</article>)}
+  </div></div></section>
+  <section class="section shell scenario-panel"><span class="eyebrow">RESEARCH EXCHANGE</span><h2>From optical links to resilient networks.</h2><p>Connect with OICL to discuss optical information and communications research.</p><a class="text-link" href={sitePath('/contact/')}>Discuss the research <span aria-hidden="true">↗</span></a></section>
 </BaseLayout>

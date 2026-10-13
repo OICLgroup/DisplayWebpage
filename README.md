@@ -1,10 +1,16 @@
 # OICL laboratory website
 
-An English-first, static Astro website for an optical communications laboratory. A separate Sanity Studio lets nontechnical editors maintain research themes, publications, people and news. Chinese names and Chinese-only items are supported without inventing translations.
+An English-first, static Astro website for OICL. A separate Sanity Studio lets editors maintain research, people, outcomes, activities and links. Chinese names and Chinese-only items are supported without inventing translations.
+
+## October 2026 redesign
+
+The site follows the laboratory PPT: **Optical Information and Communications Laboratory**, three AI-computing research areas, and the Home / Research / People / Outcomes / Activities / Links / Contact navigation. Its visual system uses GBU's Ignition Orange (`#ff4a05`) and Quantum Blue (`#0d00b2`). The PPT portrait and research figures are published with alternative text and full-size links. Empty sections indicate that content is still being collected.
+
+Run `npm run dev` and open the URL printed by Astro (this repository's `SITE_URL` uses the `/DisplayWebpage/` base path). Preview mode reads the local PPT sample content even if a Sanity project ID is configured. Set `CONTENT_SOURCE=sanity` locally to inspect published CMS records. Production builds always read Sanity and never use sample content. The public website is [OICL on GitHub Pages](https://spsp6.github.io/DisplayWebpage/).
 
 ## Current state
 
-This repository is a **content preview**. It includes a curated English summary of the Ning Deng biography and bibliography supplied by the laboratory, with selected publication links checked against publisher or conference records. It does not assume an expansion of **OICL**, invent other members or projects, or add unapproved photos. Preview builds show a notice and add `noindex` to every page. A production build is blocked until the official laboratory name and core facts are reviewed and entered in Sanity.
+The public Sanity dataset contains the PPT-approved laboratory name, principal investigator, three research directions and their images. The earlier research themes remain in Sanity with **Show on website** turned off. Twelve existing publication and patent records are displayed on the professor profile. Activities, prototypes, applications and two institutional URLs still await confirmed details.
 
 ## Run the website
 
@@ -20,7 +26,7 @@ Open the local URL printed by Astro. `npm run build` creates a preview build in 
 
 ## Sanity content studio
 
-The Sanity project is **`gd1we79o`**, with a public `production` dataset. The editing interface is hosted at [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/); sign in with an account granted access to the project. The dataset is currently empty. Published documents in a public dataset can be queried publicly, so keep unverified material as drafts.
+The Sanity project is **`gd1we79o`**, with a public `production` dataset. The editing interface is hosted at [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/); sign in with an account granted access to the project. Published documents in a public dataset can be queried publicly, so keep unverified material as drafts. The updated Studio schema is deployed.
 
 1. Copy `.env.example` to `.env` in both the repository root and `studio/`. Set root `SANITY_PROJECT_ID=gd1we79o` and Studio `SANITY_STUDIO_PROJECT_ID=gd1we79o`; keep both dataset names as `production`. The local `.env` files are ignored by Git.
 2. To run the editing studio locally:
@@ -30,7 +36,7 @@ The Sanity project is **`gd1we79o`**, with a public `production` dataset. The ed
    npm run studio:dev
    ```
 
-3. In Studio, open **Site settings** and enter verified facts. Add Research themes, Publications and People. Add News only when a real update exists. Uploaded images require meaningful alternative text.
+3. In Studio, open **Site settings** and enter verified facts. Add Research themes, Publications and People. The updated local schema also supports prototypes, applications, dated activities with photos, and important links. Upload images with meaningful alternative text.
 4. After changing the Studio schema or editor interface, run `npm run studio:deploy` from the repository root to rebuild and update the hosted Studio. This requires an authorized Sanity CLI login. Ordinary content edits are saved directly in Sanity and do not require a Studio redeploy.
 5. Sanity project settings must allow the deployed website's origin for any future browser-side features. The current website reads published content only during its server-side build.
 
@@ -50,9 +56,9 @@ Set `PUBLICATION_MODE=production` and `SITE_URL` to the canonical public HTTPS U
 
 The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages.yml`, targeting the public `spsp6/DisplayWebpage` repository. Choose **GitHub Actions** in **Settings → Pages**. The workflow defaults to `https://spsp6.github.io/DisplayWebpage/`; set a repository `SITE_URL` variable only if using a custom domain. Set `SANITY_PROJECT_ID` and optionally `SANITY_DATASET` as repository variables; set `SANITY_READ_TOKEN` as a repository secret only for a private dataset. The URL path determines Astro's base path, so repository pages and custom-domain root pages both work.
 
-The workflow runs **manually** from the Actions tab or via a `sanity-published` repository-dispatch event, and always builds with `PUBLICATION_MODE=production`. It cannot deploy the preview content: missing verified Sanity content or an unset URL stops the build. Once the site is approved, run the workflow and check the GitHub Pages URL. To automate future edits, configure a Sanity webhook for published changes to POST `{"event_type":"sanity-published"}` to GitHub's repository-dispatch endpoint using a carefully scoped GitHub token; keep the token in Sanity's private webhook settings. Test one edit, publication, rebuild and live page update before announcing the site.
+The workflow runs on pushes to `main`, manually from the Actions tab, or via a `sanity-published` repository-dispatch event. It always builds with `PUBLICATION_MODE=production`; missing verified Sanity content stops the build. Ordinary Sanity content edits do **not** automatically deploy until a webhook is configured or the workflow is run manually. To automate them, configure a Sanity webhook for published changes to POST `{"event_type":"sanity-published"}` to GitHub's repository-dispatch endpoint using a carefully scoped GitHub token; keep the token in Sanity's private webhook settings.
 
-GitHub Pages is configured to build from GitHub Actions, and the repository variable `SANITY_PROJECT_ID` points to the Sanity project. The site has **not** been deployed because the verified minimum content is still missing. The team must supply verified content and approved images before public launch. GitHub Pages availability and speed in mainland China should be measured from real user networks; hosting there does not guarantee regional performance.
+GitHub Pages is configured to build from GitHub Actions, and the repository variable `SANITY_PROJECT_ID` points to the Sanity project. GitHub Pages availability and speed in mainland China should be measured from real user networks; hosting there does not guarantee regional performance.
 
 ## Dependency note
 
@@ -73,17 +79,23 @@ The website production dependency audit currently reports no findings. Sanity St
 - Enter DOI as `10.xxxx/...` or a DOI URL. It takes priority over the optional original source URL.
 - Link to authoritative source records rather than uploading copies of papers.
 - Feature up to three publications on the home page. If none are explicitly featured, the newest three are selected automatically.
-- News appears only when entries exist; there is no empty news archive.
+- The Activities page shows dated updates when available; otherwise it displays a clear preparation state.
 
 ---
 
 # OICL 实验室网站（中文说明）
 
-这是一个以英文为主的光通信实验室静态网站，使用 Astro 构建。独立的 Sanity Studio 供非技术成员维护研究方向、论文、成员和新闻。网站支持中文姓名及仅有中文原文的内容，不会自行编造英文译文。
+这是一个以英文为主的 OICL 实验室静态网站，使用 Astro 构建。独立的 Sanity Studio 供非技术成员维护研究、人员、成果、活动和链接。网站支持中文姓名及仅有中文原文的内容，不会自行编造英文译文。
+
+## 2026 年 10 月改版
+
+网站依据实验室 PPT，采用正式英文名称 **Optical Information and Communications Laboratory**、三个面向 AI 算力的研究方向，以及 Home / Research / People / Outcomes / Activities / Links / Contact 栏目。视觉以启明橙（`#ff4a05`）为主、量子蓝（`#0d00b2`）为辅。PPT 中的肖像和研究图片已展示在网站，附替代文字和原图入口；尚未收集到资料的栏目会明确显示待更新状态。
+
+运行 `npm run dev` 后打开 Astro 输出的地址；当前 `SITE_URL` 使用 `/DisplayWebpage/` 路径。预览模式默认读取本地 PPT 示例资料，即使配置了 Sanity 项目 ID 也是如此；若想在本地查看现有 CMS 数据，可设置 `CONTENT_SOURCE=sanity`。正式版构建始终读取 Sanity，绝不使用示例资料。公开网址为 [OICL GitHub Pages](https://spsp6.github.io/DisplayWebpage/)。
 
 ## 当前状态
 
-本仓库目前是**内容预览版**。预览内容包含根据实验室提供的邓宁老师简介和论文资料整理的英文摘要；部分论文链接已与出版社或会议记录核对。网站没有推测 **OICL** 的英文全称，也没有虚构其他成员、项目或使用未经批准的照片。预览版每页都有提示，并设置 `noindex`。在正式名称和核心资料经核实并录入 Sanity 前，正式版构建会被阻止。
+公开 Sanity 数据集已更新 PPT 中的实验室名称、PI、三个研究方向及图片；之前的四个方向保留在后台，但关闭了 **Show on website**。邓宁教授资料页展示原有的 12 条论文和专利记录。Activities、Prototypes、Applications 和两个机构网址仍待补齐资料。
 
 ## 本地运行网站
 
@@ -99,7 +111,7 @@ npm run dev
 
 ## Sanity 内容后台
 
-Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。可在 [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/) 登录并编辑；账号需拥有该项目权限。数据集目前为空。公开数据集里已发布的文档可被公众查询，未经核实的资料请只存为草稿。
+Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。可在 [OICL Content Studio](https://oicl-content-gd1we79o.sanity.studio/) 登录并编辑；账号需拥有该项目权限。公开数据集里已发布的文档可被公众查询，未经核实的资料请只存为草稿。新版后台结构已部署。
 
 1. 分别在仓库根目录和 `studio/` 中，将 `.env.example` 复制为 `.env`。根目录填写 `SANITY_PROJECT_ID=gd1we79o`，Studio 填写 `SANITY_STUDIO_PROJECT_ID=gd1we79o`；两个数据集名称均保持 `production`。本地 `.env` 文件不会提交到 Git。
 2. 如果需要在本地运行编辑后台：
@@ -109,7 +121,7 @@ Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。�
    npm run studio:dev
    ```
 
-3. 在 Studio 的 **Site settings** 中填写已核实的信息，再添加研究方向、论文和成员。确有更新时才添加新闻。上传图片时须填写有意义的替代文字。
+3. 在 Studio 的 **Site settings** 中填写已核实的信息，再添加研究方向、论文和成员。新版本地结构还支持原型、应用、带照片的活动和重要链接。上传图片时须填写有意义的替代文字。
 4. 如果修改了 Studio 的内容结构或编辑界面，在仓库根目录运行 `npm run studio:deploy`，重新构建并更新线上 Studio；这需要已授权的 Sanity CLI 登录。平常编辑资料直接存入 Sanity，无需重新部署 Studio。
 5. 若将来添加浏览器端读取 Sanity 的功能，需要在 Sanity 项目设置中允许已部署网站的来源地址。当前网站仅在服务端构建时读取已发布的内容。
 
@@ -129,9 +141,9 @@ Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。�
 
 前端已在 `.github/workflows/deploy-pages.yml` 中准备好 **GitHub Pages** 发布流程，目标为公开仓库 `spsp6/DisplayWebpage`。在仓库的 **Settings → Pages** 中选择 **GitHub Actions** 作为构建来源。工作流默认使用 `https://spsp6.github.io/DisplayWebpage/`；仅在使用自定义域名时设置仓库变量 `SITE_URL`。将 `SANITY_PROJECT_ID` 及可选的 `SANITY_DATASET` 设置为仓库变量。仅在使用私有数据集时，把 `SANITY_READ_TOKEN` 设置为仓库 Secret。程序会根据网址中的路径自动处理 GitHub 项目页或自定义域名根路径。
 
-工作流可从 Actions 页面**手动运行**，也支持通过 `sanity-published` 仓库分发事件触发，且始终以 `PUBLICATION_MODE=production` 构建。若 Sanity 中缺少经核实的内容或网址未设置，构建会停止，不会把预览资料部署到公开网站。资料获批后，运行工作流并检查 GitHub Pages 网址。若要让后续内容发布自动重建，可为已发布内容配置 Sanity webhook，使用权限范围尽量小的 GitHub 令牌，向仓库分发接口发送 `{"event_type":"sanity-published"}`；令牌只保存在 Sanity 私有的 webhook 设置中。在 webhook 配好前，内容更新后需手动重跑工作流。对外公布网站前，应实际测试一次内容编辑、发布、重新构建及线上页面更新的完整流程。
+工作流在代码推送到 `main` 时运行，也可从 Actions 页面**手动运行**，或通过 `sanity-published` 仓库分发事件触发，始终以 `PUBLICATION_MODE=production` 构建。若 Sanity 中缺少经核实的内容，构建会停止。一般的 Sanity 资料修改不会自动部署；需手动重跑工作流，或配置 Sanity webhook。配置 webhook 时，应使用权限范围尽量小的 GitHub 令牌，向仓库分发接口发送 `{"event_type":"sanity-published"}`，并只将令牌保存在 Sanity 私有设置中。
 
-GitHub Pages 已设置为从 GitHub Actions 构建，仓库变量 `SANITY_PROJECT_ID` 也已指向当前 Sanity 项目。由于最小核实内容尚未齐备，网站**尚未发布**。公开上线前，实验室还需提供经核实的内容和获准使用的图片。GitHub Pages 在中国大陆的实际可用性与速度应通过真实网络测试，不能仅凭托管平台名称保证。
+GitHub Pages 已设置为从 GitHub Actions 构建，仓库变量 `SANITY_PROJECT_ID` 也已指向当前 Sanity 项目。GitHub Pages 在中国大陆的实际可用性与速度应通过真实网络测试，不能仅凭托管平台名称保证。
 
 ## 依赖说明
 
@@ -152,4 +164,4 @@ GitHub Pages 已设置为从 GitHub Actions 构建，仓库变量 `SANITY_PROJEC
 - DOI 可填写为 `10.xxxx/...` 或 DOI 网址，优先于可选的原始来源网址。
 - 优先链接到权威来源记录，不上传论文副本。
 - 首页最多展示三篇精选论文；若未手动精选，则自动展示最新的三篇。
-- 仅在有新闻内容时显示新闻板块，不设置空的新闻归档页。
+- Activities 页面有资料时按日期展示；暂无资料时明确显示待更新状态。

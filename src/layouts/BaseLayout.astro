@@ -3,58 +3,53 @@ import '../styles/global.css';
 import type { SiteContent } from '../lib/content';
 import { sitePath } from '../lib/paths';
 
-type Props = {
-  title: string;
-  description: string;
-  active?: string;
-  content: SiteContent;
-};
-
+type Props = { title: string; description: string; active?: string; content: SiteContent };
 const { title, description, active = '', content } = Astro.props;
-const labName = content.settings.labName;
+const { settings } = content;
 const isDraft = import.meta.env.PUBLICATION_MODE !== 'production' || !content.readyToPublish;
 const canonical = new URL(Astro.url.pathname, import.meta.env.SITE_URL || 'https://example.org').href;
 const nav = [
-  { label: 'Home', href: sitePath('/'), key: 'home' },
-  { label: 'Research', href: sitePath('/research/'), key: 'research' },
-  { label: 'Publications', href: sitePath('/publications/'), key: 'publications' },
-  { label: 'People', href: sitePath('/people/'), key: 'people' },
-  { label: 'Contact', href: sitePath('/contact/'), key: 'contact' }
+  { label: 'Home', href: '/', key: 'home' },
+  { label: 'Research', href: '/research/', key: 'research' },
+  { label: 'People', href: '/people/', key: 'people' },
+  { label: 'Outcomes', href: '/outcomes/', key: 'outcomes' },
+  { label: 'Activities', href: '/activities/', key: 'activities' },
+  { label: 'Links', href: '/links/', key: 'links' },
+  { label: 'Contact', href: '/contact/', key: 'contact' }
 ];
 ---
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f8fa" />
+    <meta name="theme-color" content="#fffaf6" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:title" content={`${title} | ${labName}`} />
+    <meta property="og:title" content={`${title} | ${settings.labName}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     {isDraft && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href={sitePath('/favicon.svg')} type="image/svg+xml" />
-    <title>{title} | {labName}</title>
+    <title>{title} | {settings.labName}</title>
   </head>
   <body>
-    {isDraft && <div class="preview-banner" role="status">Content preview · laboratory details are being verified</div>}
+    {isDraft && <div class="preview-banner" role="status">Local design preview · content awaits final review</div>}
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href={sitePath('/')} aria-label={`${labName} home`}>
-          <span class="brand-symbol" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="brand-copy"><strong>{labName}</strong><small>{content.settings.officialName || 'Optical Communications Research'}</small></span>
+        <a class="brand" href={sitePath('/')} aria-label="OICL home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-copy"><strong>OICL<span class="brand-dot">.</span></strong><small>{settings.officialName || 'Optical Communications Research'}</small></span>
         </a>
         <nav class="desktop-nav" aria-label="Main navigation">
-          {nav.map((item) => <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
+          {nav.map((item) => <a href={sitePath(item.href)} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
         </nav>
         <details class="mobile-menu">
           <summary aria-label="Open navigation"><span></span><span></span><span></span></summary>
           <nav aria-label="Mobile navigation">
-            {nav.map((item) => <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
+            {nav.map((item) => <a href={sitePath(item.href)} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
           </nav>
         </details>
       </div>
@@ -62,20 +57,18 @@ const nav = [
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <div>
-          <a class="footer-brand" href={sitePath('/')}>{labName}<span class="footer-dot">.</span></a>
-          <p>{content.settings.officialName || 'Optical Communications Research'}</p>
-          {content.settings.affiliation && <p>{content.settings.affiliation}</p>}
+        <div class="footer-identity">
+          <a class="footer-brand" href={sitePath('/')}>OICL<span>.</span></a>
+          <p>{settings.officialName || settings.labName}</p>
+          {settings.chineseName && <p lang="zh-CN">{settings.chineseName}</p>}
+          <p>{settings.affiliation}</p>
         </div>
-        <div class="footer-links">
-          <a href={sitePath('/research/')}>Research</a>
-          <a href={sitePath('/publications/')}>Publications</a>
-          <a href={sitePath('/people/')}>People</a>
-          <a href={sitePath('/contact/')}>Contact</a>
-        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          {nav.slice(1).map((item) => <a href={sitePath(item.href)}>{item.label}</a>)}
+        </nav>
         <div class="footer-end">
-          <span>Research, in focus.</span>
-          <span>© {new Date().getFullYear()} {labName}</span>
+          {settings.contactEmail && <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>}
+          <small>© {new Date().getFullYear()} OICL</small>
         </div>
       </div>
     </footer>

@@ -1,36 +1,39 @@
-import type { NewsItem, Person, Publication, ResearchTheme, SiteSettings } from '../lib/content';
+import type { Activity, ImportantLink, Outcome, Person, Publication, ResearchTheme, SiteSettings } from '../lib/content';
 
-// Preview content is based on the laboratory biography supplied by the user.
-// The public build still requires these records to be reviewed and entered in Sanity.
+// Local redesign preview from the laboratory PPT. It is never used by production builds.
 export const previewSettings: SiteSettings = {
   labName: 'OICL',
+  officialName: 'Optical Information and Communications Laboratory',
+  chineseName: '光信息通信实验室',
   affiliation: 'Great Bay University',
-  heroStatement: 'Research at the intersection of light, networks and computing.',
-  intro: 'OICL explores optical communications, optical switching networks, networks for AI computing, and optical information display.',
+  heroStatement: 'Optical networks for the next era of AI computing.',
+  intro: 'Optical Information and Communications Laboratory (OICL) focuses on enhancing AI computing through cutting-edge research and practical applications in three key areas: short-reach optical interconnects, flexible optical switching, and resilient optical networks for AI computing.',
+  chineseIntro: '光信息通信实验室聚焦提升人工智能算力，围绕三个方向开展前沿研究与应用落地：算内短距光互连、灵活光交换、高韧性智算光网络。',
+  applicationStatement: 'Optical Systems and Networks for AI and 6G',
+  applicationChinese: '面向AI基座、6G承载的高可靠、高性能光子交换网络',
+  networkStandards: '下一代固定网络：ION-2030（ITU）、F6G（ETSI）',
   contactEmail: 'ndeng@gbu.edu.cn',
   location: 'Dongguan, Guangdong, China'
 };
 
 export const previewThemes: ResearchTheme[] = [
   {
-    id: 'optical-communications', slug: 'optical-communications',
-    title: 'Optical communications', chineseTitle: '光信息通信',
-    summary: 'Exploring light-based transmission systems and the networks that carry information.'
+    id: 'short-reach', slug: 'short-reach-optical-interconnects',
+    title: 'Short-reach optical interconnects', chineseTitle: '算内短距光互连',
+    summary: 'Optical links that connect high-performance computing systems over short distances.',
+    imageUrl: '/images/research/short-reach-system.png', imageAlt: 'Experimental system diagram for short-reach optical interconnects'
   },
   {
-    id: 'optical-switching', slug: 'optical-switching',
-    title: 'Optical switching networks', chineseTitle: '光交换网络',
-    summary: 'Studying flexible optical paths and switching architectures for communication and computing networks.'
+    id: 'flexible-switching', slug: 'flexible-optical-switching',
+    title: 'Flexible optical switching', chineseTitle: '灵活光交换',
+    summary: 'Adaptable optical circuit switching for the changing traffic patterns of AI infrastructure.',
+    imageUrl: '/images/research/optical-switching-bench.png', imageAlt: 'Optical circuit switching research bench with labeled components'
   },
   {
-    id: 'ai-computing-networks', slug: 'ai-computing-networks',
-    title: 'Networks for AI computing', chineseTitle: '人工智能算力网络',
-    summary: 'Investigating network infrastructure that connects and supports distributed AI computing.'
-  },
-  {
-    id: 'optical-display', slug: 'optical-display',
-    title: 'Optical display & immersive systems', chineseTitle: '光信息呈现与虚拟现实融合技术',
-    summary: 'Exploring the intersection of optical information display and virtual reality experiences.'
+    id: 'resilient-networks', slug: 'resilient-optical-networks',
+    title: 'Resilient optical networks for AI computing', chineseTitle: '高韧性智算光网络',
+    summary: 'High-capacity optical networks designed to sustain computing connectivity under changing conditions.',
+    imageUrl: '/images/research/resilient-ocs-topology.png', imageAlt: 'Resilient optical circuit switching network with redundant links'
   }
 ];
 
@@ -61,11 +64,20 @@ export const previewPublications: Publication[] = [
 
 export const previewPeople: Person[] = [
   {
-    id: 'ning-deng', name: 'Ning Deng', chineseName: '邓宁', role: 'Professor',
+    id: 'ning-deng', name: 'Ning Deng', chineseName: '邓宁', slug: 'ning-deng', group: 'Professors', role: 'Professor · Principal Investigator',
     focus: 'Optical communications, optical switching and networks for AI computing',
-    biography: 'Prof. Deng received his bachelor’s degree from the University of Science and Technology of China in 2002 and his PhD from the Chinese University of Hong Kong in 2007. After research and industry roles, he joined Great Bay University in 2024.',
-    email: 'ndeng@gbu.edu.cn', order: 1
+    biography: 'Dr. Ning Deng is currently a Full Professor at Great Bay University (GBU) and Director of the Dongguan Key Laboratory of Intelligence and Information Technology. He is a Fellow of Optica (formerly OSA), Associate Editor of the Journal of Optical Communications and Networking (JOCN), and editor of multiple ITU-T and CCSA standards. Before joining GBU, he was a Technology Expert at Huawei for about 15 years, making significant contributions to optical switching networks, high-speed transmission systems, and advanced display and lighting for vehicles. He has more than 70 patents granted or pending and has published about 85 papers in refereed conferences and journals.',
+    portraitUrl: '/images/ning-deng.jpeg',
+    portraitAlt: 'Portrait of Prof. Ning Deng',
+    email: 'ndeng@gbu.edu.cn',
+    profileUrl: 'https://www.gbu.edu.cn/sz_details_g7yU_92/785.html', order: 1
   }
 ];
 
-export const previewNews: NewsItem[] = [];
+export const previewActivities: Activity[] = [];
+export const previewOutcomes: Outcome[] = [];
+export const previewLinks: ImportantLink[] = [
+  { id: 'dg-key-lab', title: 'Dongguan Key Laboratory', description: 'Institutional link to be confirmed.' },
+  { id: 'gbu', title: 'Great Bay University', chineseTitle: '大湾区大学', url: 'https://www.gbu.edu.cn/' },
+  { id: 'school-cit', title: 'School of Computing and Information Technology', description: 'Institutional link to be confirmed.' }
+];

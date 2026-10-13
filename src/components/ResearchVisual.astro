@@ -1,0 +1,28 @@
+---
+type Props = { variant: number };
+const { variant } = Astro.props;
+---
+<div class:list={['research-art', `research-art-${variant % 3}`]} aria-hidden="true">
+  <svg viewBox="0 0 480 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {variant % 3 === 0 && <>
+      <path d="M34 125H446" stroke="#0d00b2" stroke-width="2" stroke-dasharray="6 10" opacity=".28"/>
+      {[75, 150, 225, 300, 375].map((x) => <g><rect x={x - 25} y="91" width="50" height="68" rx="9" fill="#fff" stroke="#0d00b2" stroke-width="2"/><path d={`M${x - 13} 112h26M${x - 13} 125h26M${x - 13} 138h26`} stroke="#0d00b2" opacity=".38"/><circle cx={x} cy="125" r="5" fill="#ff4a05"/></g>)}
+      <path d="M75 125h300" stroke="#ff4a05" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="240" cy="125" r="54" stroke="#ff4a05" opacity=".16" stroke-width="18"/>
+    </>}
+    {variant % 3 === 1 && <>
+      <path d="M48 75H432M48 125H432M48 175H432" stroke="#0d00b2" stroke-width="2" opacity=".24"/>
+      <path d="M48 75H194L246 125H432M48 125H194L246 75H432M48 175H194L246 125" stroke="#ff4a05" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="186" y="66" width="65" height="118" rx="13" fill="#0d00b2"/>
+      <path d="M199 91h38M199 125h38M199 159h38" stroke="#fff" stroke-width="3" opacity=".8"/>
+      {[75, 125, 175].map((y) => <g><circle cx="48" cy={y} r="7" fill="#0d00b2"/><circle cx="432" cy={y} r="7" fill="#ff4a05"/></g>)}
+    </>}
+    {variant % 3 === 2 && <>
+      <path d="M91 126L240 55L389 126L240 198L91 126Z" stroke="#0d00b2" stroke-width="2" opacity=".35"/>
+      <path d="M91 126L240 55L389 126M91 126L240 198L389 126M240 55V198" stroke="#0d00b2" stroke-width="2" opacity=".3"/>
+      <path d="M91 126L240 55L389 126L240 198L91 126Z" stroke="#ff4a05" stroke-width="4" stroke-linecap="round" stroke-dasharray="45 13 86 16"/>
+      <circle cx="91" cy="126" r="16" fill="#0d00b2"/><circle cx="240" cy="55" r="16" fill="#ff4a05"/><circle cx="389" cy="126" r="16" fill="#0d00b2"/><circle cx="240" cy="198" r="16" fill="#ff4a05"/>
+      <circle cx="240" cy="126" r="30" fill="#fff" stroke="#0d00b2" stroke-width="3"/><path d="M227 126h26M240 113v26" stroke="#ff4a05" stroke-width="3"/>
+    </>}
+  </svg>
+</div>

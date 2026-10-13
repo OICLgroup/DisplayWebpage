@@ -1,7 +1,8 @@
 name: Publish OICL on GitHub Pages
 
-# No push trigger; release requires a manual run or an authenticated CMS event.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   repository_dispatch:
     types: [sanity-published]

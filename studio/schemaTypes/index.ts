@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
 
 const required = (Rule: any) => Rule.required();
 const urlField = (name: string, title: string) => defineField({
@@ -20,6 +20,10 @@ const siteSettings = defineType({
     defineField({ name: 'affiliation', title: 'Institution / affiliation', type: 'string', validation: required }),
     defineField({ name: 'heroStatement', title: 'Home hero statement', type: 'string', description: 'One accurate sentence about the lab.' }),
     defineField({ name: 'intro', title: 'English introduction', type: 'text', rows: 4, validation: required }),
+    defineField({ name: 'chineseIntro', title: 'Chinese introduction (optional)', type: 'text', rows: 4 }),
+    defineField({ name: 'applicationStatement', title: 'Application scenarios', type: 'string' }),
+    defineField({ name: 'applicationChinese', title: 'Application scenarios (Chinese)', type: 'string' }),
+    defineField({ name: 'networkStandards', title: 'Next-generation fixed network initiatives', type: 'string', description: 'For example, the initiative names shown in the approved research presentation.' }),
     defineField({ name: 'contactEmail', title: 'Collaboration email', type: 'email', validation: required }),
     defineField({ name: 'location', title: 'Location', type: 'string' })
   ]
@@ -34,6 +38,7 @@ const researchTheme = defineType({
     defineField({ name: 'summary', title: 'Short summary', type: 'text', rows: 3, validation: required }),
     defineField({ name: 'detail', title: 'Detailed description', type: 'text', rows: 6 }),
     imageWithAlt('image', 'Verified research image'),
+    defineField({ name: 'active', title: 'Show on website', type: 'boolean', initialValue: true, description: 'Turn off to retain an older theme without publishing it.' }),
     defineField({ name: 'order', title: 'Display order', type: 'number', initialValue: 10 })
   ],
   preview: { select: { title: 'title', subtitle: 'summary', media: 'image' } }
@@ -60,6 +65,8 @@ const person = defineType({
   fields: [
     defineField({ name: 'name', title: 'English / romanized name', type: 'string', validation: required }),
     defineField({ name: 'chineseName', title: 'Chinese name (optional)', type: 'string' }),
+    defineField({ name: 'slug', title: 'Profile URL', type: 'slug', options: { source: 'name' } }),
+    defineField({ name: 'group', title: 'People group', type: 'string', options: { list: ['Professors', 'Researchers', 'Students'] }, initialValue: 'Researchers' }),
     defineField({ name: 'role', title: 'Role', type: 'string', validation: required }),
     defineField({ name: 'focus', title: 'Research focus', type: 'text', rows: 2 }),
     defineField({ name: 'biography', title: 'Short English biography', type: 'text', rows: 5 }),
@@ -72,15 +79,47 @@ const person = defineType({
 });
 
 const newsItem = defineType({
-  name: 'newsItem', title: 'News', type: 'document',
+  name: 'newsItem', title: 'Activities', type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Headline', type: 'string', validation: required }),
     defineField({ name: 'date', title: 'Date', type: 'date', validation: required }),
     defineField({ name: 'summary', title: 'Short summary', type: 'text', rows: 3 }),
+    defineField({ name: 'images', title: 'Photos', type: 'array', of: [
+      defineArrayMember({ type: 'image', options: { hotspot: true }, fields: [
+        defineField({ name: 'alt', title: 'Alternative text', type: 'string', validation: required })
+      ] })
+    ] }),
     urlField('url', 'More information URL'),
     defineField({ name: 'language', title: 'Content language', type: 'string', options: { list: [{ title: 'English', value: 'en' }, { title: 'Chinese only', value: 'zh' }] }, initialValue: 'en' })
   ],
   preview: { select: { title: 'title', subtitle: 'date' } }
 });
 
-export const schemaTypes = [siteSettings, researchTheme, publication, person, newsItem];
+const outcome = defineType({
+  name: 'outcome', title: 'Prototypes and applications', type: 'document',
+  fields: [
+    defineField({ name: 'kind', title: 'Category', type: 'string', options: { list: ['Prototype', 'Application'] }, validation: required }),
+    defineField({ name: 'title', title: 'Title', type: 'string', validation: required }),
+    defineField({ name: 'summary', title: 'Description', type: 'text', rows: 4, validation: required }),
+    defineField({ name: 'year', title: 'Year', type: 'number' }),
+    urlField('url', 'Verified external source'),
+    imageWithAlt('image', 'Verified image'),
+    defineField({ name: 'language', title: 'Content language', type: 'string', options: { list: [{ title: 'English', value: 'en' }, { title: 'Chinese only', value: 'zh' }] }, initialValue: 'en' }),
+    defineField({ name: 'order', title: 'Display order', type: 'number', initialValue: 10 })
+  ],
+  preview: { select: { title: 'title', subtitle: 'kind', media: 'image' } }
+});
+
+const importantLink = defineType({
+  name: 'importantLink', title: 'Important links', type: 'document',
+  fields: [
+    defineField({ name: 'title', title: 'English label', type: 'string', validation: required }),
+    defineField({ name: 'chineseTitle', title: 'Chinese label (optional)', type: 'string' }),
+    urlField('url', 'Verified website URL'),
+    defineField({ name: 'description', title: 'Short description', type: 'string' }),
+    defineField({ name: 'order', title: 'Display order', type: 'number', initialValue: 10 })
+  ],
+  preview: { select: { title: 'title', subtitle: 'url' } }
+});
+
+export const schemaTypes = [siteSettings, researchTheme, publication, person, newsItem, outcome, importantLink];

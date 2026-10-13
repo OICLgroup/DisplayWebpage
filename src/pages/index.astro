@@ -2,50 +2,71 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import HeroVisual from '../components/HeroVisual.astro';
+import ResearchVisual from '../components/ResearchVisual.astro';
 import PublicationItem from '../components/PublicationItem.astro';
-import { getSiteContent } from '../lib/content';
+import { getSiteContent, personSlug } from '../lib/content';
 import { sitePath } from '../lib/paths';
 
 const content = await getSiteContent();
-const { settings, themes, publications, people, news } = content;
-const featured = publications.filter((item) => item.featured).slice(0, 3);
-const selected = featured.length ? featured : publications.slice(0, 3);
+const { settings, themes, publications, people, activities } = content;
+const selected = publications.filter((item) => item.featured).slice(0, 3);
+const featuredPublications = selected.length ? selected : publications.slice(0, 3);
+const pi = people.find((person) => person.group === 'Professors' || /professor/i.test(person.role));
+const portrait = pi?.portraitUrl?.startsWith('/') ? sitePath(pi.portraitUrl) : pi?.portraitUrl;
 ---
-<BaseLayout title="Home" description="OICL research in optical communications, publications, people and collaboration." active="home" content={content}>
-  <section class="hero shell">
-    <div class="hero-copy">
-      <div class="hero-index"><span class="index-line"></span><span>OICL / OPTICAL COMMUNICATIONS</span></div>
-      <h1>Exploring<br /><em>optical</em><br />communications<span class="accent-period">.</span></h1>
-      <p class="hero-lead">{settings.heroStatement && settings.heroStatement !== 'Exploring optical communications.' ? settings.heroStatement : settings.intro}</p>
-      {settings.heroStatement && settings.heroStatement !== 'Exploring optical communications.' && settings.intro && <p class="hero-support">{settings.intro}</p>}
-      <div class="hero-actions"><a class="button button-primary" href={sitePath('/research/')}>Explore our research <span aria-hidden="true">↗</span></a><a class="button button-quiet" href={sitePath('/contact/')}>Get in touch <span aria-hidden="true">→</span></a></div>
-      <div class="hero-footnote"><span class="footnote-mark">✳</span><span>{settings.affiliation || 'Independent website preview · affiliation pending confirmation'}</span></div>
+<BaseLayout title="Home" description="OICL studies optical interconnects, switching and resilient networks for AI computing." active="home" content={content}>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <div class="hero-kicker"><span class="kicker-line"></span> GREAT BAY UNIVERSITY / OICL</div>
+        <p class="hero-lab-name">{settings.officialName || settings.labName}</p>
+        <h1>Light moves<br /><em>intelligence</em><br />forward<span>.</span></h1>
+        <p class="hero-lead">{settings.heroStatement || settings.intro}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={sitePath('/research/')}>Explore our research <span aria-hidden="true">↗</span></a>
+          <a class="button button-plain" href={sitePath('/contact/')}>Contact OICL <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="hero-chinese" lang="zh-CN">{settings.chineseName || '光信息通信实验室'}</p>
+      </div>
+      <HeroVisual />
     </div>
-    <HeroVisual />
   </section>
 
-  <section class="intro-band">
-    <div class="shell intro-band-inner"><span class="eyebrow">THE FIELD</span><p>Light is a medium for connection. <span>We study optical communications and the systems that make information move.</span></p><span class="band-arrow" aria-hidden="true">↘</span></div>
+  <section class="mission-band">
+    <div class="shell mission-grid">
+      <span class="eyebrow">OUR FOCUS / 研究定位</span>
+      <p>{settings.intro}</p>
+      {settings.chineseIntro && <p class="mission-chinese" lang="zh-CN">{settings.chineseIntro}</p>}
+    </div>
   </section>
 
-  <section class="section shell focus-section">
-    <SectionHeading eyebrow="01 / RESEARCH" title="What we explore" intro="A clear view of the questions and methods behind the work." href="/research/" linkText="All research" />
-    {themes.length > 0 ? <div class="theme-grid">
-      {themes.slice(0, 4).map((theme, index) => <a class="theme-card" href={sitePath(`/research/#${theme.slug || theme.id}`)}>
-        {theme.imageUrl && <img src={theme.imageUrl} alt={theme.imageAlt || ''} loading="lazy" />}
-        <div class="theme-card-top"><span>{String(index + 1).padStart(2, '0')}</span><span aria-hidden="true">↗</span></div>
-        <div><h3>{theme.title}</h3>{theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}<p>{theme.summary}</p></div>
+  <section class="section shell" id="research">
+    <SectionHeading eyebrow="01 / RESEARCH" title="Three paths. One connected future." intro="Optical systems and networks built for the demands of AI computing." href="/research/" linkText="View research" />
+    <div class="research-card-grid">
+      {themes.slice(0, 3).map((theme, index) => <a class="research-card" href={sitePath(`/research/#${theme.slug || theme.id}`)}>
+        <div class="research-card-art"><ResearchVisual variant={index} /></div>
+        <div class="research-card-body"><span class="card-index">0{index + 1} / 03</span><h3>{theme.title}</h3>{theme.chineseTitle && <p class="chinese-label" lang="zh-CN">{theme.chineseTitle}</p>}<p>{theme.summary}</p><span class="card-arrow" aria-hidden="true">↗</span></div>
       </a>)}
-    </div> : <div class="focus-preview"><div class="focus-graphic"><span class="focus-orbit orbit-one"></span><span class="focus-orbit orbit-two"></span><span class="focus-core"></span></div><div><span class="eyebrow">CORE FIELD</span><h3>Optical communications</h3><p>Specific research themes will be added here after the laboratory confirms its current areas of work.</p><a class="text-link" href={sitePath('/research/')}>Explore the research page <span aria-hidden="true">↗</span></a></div></div>}
+    </div>
   </section>
 
-  {selected.length > 0 && <section class="section section-tinted">
-    <div class="shell"><SectionHeading eyebrow="02 / SELECTED OUTPUTS" title="Recent work" intro="Selected publications from the laboratory." href="/publications/" linkText="View all publications" /><div class="publication-list">{selected.map((item) => <PublicationItem publication={item} compact />)}</div></div>
+  <section class="application-band">
+    <div class="shell application-inner"><span class="eyebrow">APPLICATION SCENARIOS</span><p>{settings.applicationStatement || 'Optical systems and networks for AI and 6G.'}</p><a href={sitePath('/research/')}>Explore the research <span aria-hidden="true">↗</span></a></div>
+  </section>
+
+  {featuredPublications.length > 0 && <section class="section shell">
+    <SectionHeading eyebrow="02 / OUTCOMES" title="Selected work" intro="Research results and publications from OICL." href="/outcomes/" linkText="All outcomes" />
+    <div class="publication-list">{featuredPublications.map((item) => <PublicationItem publication={item} compact />)}</div>
   </section>}
 
-  {people.length > 0 && <section class="section shell people-teaser"><div><span class="eyebrow">03 / PEOPLE</span><h2>Research is a<br /><em>collective effort.</em></h2></div><div><p>Meet the people behind OICL and the questions they work on together.</p><a class="button button-outline" href={sitePath('/people/')}>Meet the team <span aria-hidden="true">↗</span></a></div></section>}
+  {pi && <section class="section team-band">
+    <div class="shell team-inner">
+      <div class="team-copy"><span class="eyebrow">03 / PEOPLE</span><h2>Meet the mind<br />behind the lab<span>.</span></h2><p>Research is driven by people who connect fundamental ideas with practical systems.</p><a class="button button-outline" href={sitePath(`/people/${personSlug(pi)}/`)}>Meet Prof. {pi.name} <span aria-hidden="true">↗</span></a></div>
+      <div class="team-portrait">{portrait ? <img src={portrait} alt={pi.portraitAlt || `Portrait of ${pi.name}`} loading="lazy" /> : <span aria-hidden="true">{pi.name.split(' ').map((part) => part[0]).join('')}</span>}<div><strong>Prof. {pi.name}</strong>{pi.chineseName && <span lang="zh-CN">{pi.chineseName}</span>}<small>Principal Investigator</small></div></div>
+    </div>
+  </section>}
 
-  {news.length > 0 && <section class="section shell news-section"><SectionHeading eyebrow="LATEST" title="From the lab" /><div class="news-grid">{news.slice(0, 3).map((item) => <article class="news-card"><time datetime={item.date}>{item.date}</time><h3 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h3>{item.language === 'zh' && <span class="language-tag">Chinese only</span>}{item.summary && <p>{item.summary}</p>}{item.url && <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">Read more <span aria-hidden="true">↗</span></a>}</article>)}</div></section>}
+  {activities.length > 0 && <section class="section shell"><SectionHeading eyebrow="04 / ACTIVITIES" title="From the lab" href="/activities/" linkText="View activities" /><div class="activity-teasers">{activities.slice(0, 2).map((item) => <a href={sitePath('/activities/')}><time datetime={item.date}>{item.date}</time><h3>{item.title}</h3><span aria-hidden="true">↗</span></a>)}</div></section>}
 
-  <section class="contact-strip"><div class="shell contact-strip-inner"><div><span class="eyebrow">CONNECT WITH OICL</span><h2>Let’s start a conversation<span class="accent-period">.</span></h2><p>For research exchange and potential collaboration.</p></div><a class="button button-light" href={sitePath('/contact/')}>Contact the lab <span aria-hidden="true">↗</span></a></div></section>
+  <section class="contact-callout"><div class="shell contact-callout-inner"><div><span class="eyebrow">CONNECT / 交流与招聘</span><h2>Let's build what comes next<span>.</span></h2><p>For research exchange and collaboration with OICL.</p></div><a class="button button-light" href={sitePath('/contact/')}>Get in touch <span aria-hidden="true">↗</span></a></div></section>
 </BaseLayout>
