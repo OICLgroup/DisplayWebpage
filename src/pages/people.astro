@@ -12,7 +12,7 @@ function inGroup(person: Person, group: typeof groups[number]): boolean {
 }
 ---
 <BaseLayout title="People" description="Meet OICL's professors, researchers and students." active="people" content={content}>
-  <section class="page-hero shell"><span class="eyebrow">PEOPLE / 研究人员</span><h1>People who move<br /><em>ideas forward.</em></h1><p>Meet the researchers behind the work.</p></section>
+  <section class="page-hero shell"><span class="eyebrow">OICL / 研究人员</span><h1>People<span>.</span></h1><p>Meet the researchers behind the work.</p></section>
   {groups.map((group, groupIndex) => {
     const members = content.people.filter((person) => inGroup(person, group));
     return <section class:list={['section', { 'section-soft': groupIndex % 2 === 1 }]} id={group.toLowerCase()}><div class="shell"><div class="people-group-heading"><span class="eyebrow">0{groupIndex + 1} / PEOPLE</span><h2>{group}</h2></div>

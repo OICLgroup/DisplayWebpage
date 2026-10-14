@@ -5,6 +5,6 @@ const content = await getSiteContent();
 const { links } = content;
 ---
 <BaseLayout title="Links" description="Institutions and resources connected with OICL." active="links" content={content}>
-  <section class="page-hero shell"><span class="eyebrow">LINKS / 重要链接</span><h1>Connected by<br /><em>research.</em></h1><p>Institutional resources and related organizations.</p></section>
+  <section class="page-hero shell"><span class="eyebrow">OICL / 重要链接</span><h1>Links<span>.</span></h1><p>Institutional resources and related organizations.</p></section>
   <section class="section shell"><div class="link-grid">{links.map((item, index) => <article class:list={['link-card', { 'link-card-pending': !item.url }]}><span class="card-index">0{index + 1}</span><h2>{item.title}</h2>{item.chineseTitle && <span class="chinese-label" lang="zh-CN">{item.chineseTitle}</span>}{item.description && <p>{item.description}</p>}{item.url ? <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">Visit website <span aria-hidden="true">↗</span></a> : <span class="pending-label">Link pending verification</span>}</article>)}</div>{links.length === 0 && <div class="empty-state"><h2>Links in preparation</h2><p>Verified institutional links will appear here.</p></div>}</section>
 </BaseLayout>

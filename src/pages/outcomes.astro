@@ -11,7 +11,7 @@ const categories = [
 ] as const;
 ---
 <BaseLayout title="Outcomes" description="OICL publications, prototypes and applications." active="outcomes" content={content}>
-  <section class="page-hero shell"><span class="eyebrow">OUTCOMES / 研究成果</span><h1>Ideas made<br /><em>visible.</em></h1><p>Publications, prototypes and applications emerging from our research.</p></section>
+  <section class="page-hero shell"><span class="eyebrow">OICL / 研究成果</span><h1>Outcomes<span>.</span></h1><p>Publications, prototypes and applications emerging from our research.</p></section>
   <nav class="section-nav shell" aria-label="Outcome categories"><a href="#publications">Publications</a><a href="#prototypes">Prototypes</a><a href="#applications">Applications</a></nav>
   <section class="section shell" id="publications"><div class="section-heading"><div><span class="eyebrow">01 / OUTCOMES</span><h2>Publications</h2><p>Research records organized by year. Source links appear where confirmed.</p></div></div>
     {years.length ? <div class="year-groups">{years.map((year) => <section class="year-group" aria-labelledby={`year-${year}`}><h3 id={`year-${year}`}>{year}</h3><div class="publication-list">{publications.filter((item) => item.year === year).map((item) => <PublicationItem publication={item} />)}</div></section>)}</div> : <div class="empty-state"><h3>Publication list in preparation</h3><p>Confirmed citations will be added here.</p></div>}
