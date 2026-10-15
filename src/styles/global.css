@@ -293,7 +293,11 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .application-inner { padding-block: 25px; flex-wrap: wrap; }
   .application-inner .eyebrow { width: 100%; }
   .research-hero-grid { grid-template-columns: 1fr; gap: 30px; align-items: start; }
-  .research-map { grid-template-columns: 1fr; grid-template-areas: "hub" "short" "resil" "flex"; gap: 42px; }
+  .research-map { grid-template-columns: 1fr; grid-template-areas: "hub" "short" "resil" "flex"; gap: 32px; margin-top: 38px; }
+  .research-hub { width: 100%; }
+  .research-hub-shape { width: min(42vw, 200px); }
+  .research-hub-shape strong { font-size: 20px; }
+  .research-hub-shape span { font-size: 12px; }
   .research-area { width: min(100%, 440px); }
   .team-inner { gap: 25px; }
   .team-portrait { grid-template-columns: 45% 55%; }
@@ -330,6 +334,10 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .page-hero h1 { font-size: clamp(40px, 9vw, 52px); }
   .page-hero p { font-size: 15px; }
   .page-hero + .section, .page-hero + .section-nav + .section, .profile-header + .section { padding-top: 42px; }
+  .research-map { gap: 28px; margin-top: 30px; }
+  .research-hub-shape { width: clamp(150px, 43vw, 180px); }
+  .research-hub-shape strong { font-size: 18px; }
+  .research-hub-shape span { font-size: 10px; }
   .profile-layout { gap: 35px; }
   .profile-aside { max-width: 350px; }
   .year-group { grid-template-columns: 1fr; gap: 10px; }
