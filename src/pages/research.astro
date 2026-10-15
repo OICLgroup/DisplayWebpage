@@ -1,32 +1,85 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ResearchVisual from '../components/ResearchVisual.astro';
-import { getSiteContent } from '../lib/content';
+import { getSiteContent, type ResearchTheme } from '../lib/content';
 import { sitePath } from '../lib/paths';
 const content = await getSiteContent();
-const { settings, themes } = content;
-const pi = content.people.find((person) => person.group === 'Professors' || /professor/i.test(person.role));
-const figureSets: Record<string, { src: string; alt: string; caption: string }[]> = {
-  'short-reach-optical-interconnects': [
-    { src: '/images/research/short-reach-system.png', alt: 'Experimental block diagram for short-reach optical interconnects', caption: 'Short-reach optical interconnect test system' },
-    { src: '/images/research/short-reach-measurements.png', alt: 'Short-reach optical link design and measured performance charts', caption: 'Optical link design and measurement' }
-  ],
-  'flexible-optical-switching': [
-    { src: '/images/research/optical-switching-bench.png', alt: 'Optical switching bench with labeled optical components', caption: 'Optical switching laboratory setup' },
-    { src: '/images/research/optical-switching-schematic.png', alt: 'Wavelength selective switch optical schematic and channel arrangement', caption: 'Flexible optical switching schematic' }
-  ],
-  'resilient-optical-networks': [
-    { src: '/images/research/resilient-ocs-topology.png', alt: 'Resilient optical circuit switching topology with redundant connections', caption: 'Resilient optical circuit switching topology' },
-    { src: '/images/research/resilient-recovery-timeline.png', alt: 'Timeline showing optical circuit switch recognition and recovery time', caption: 'Failure recognition and recovery timeline' }
-  ]
+const { settings, themes, people } = content;
+const pi = people.find((person) => person.group === 'Professors' || /professor/i.test(person.role));
+
+// PPT order: short-reach (top), resilient networks (bottom-left), flexible switching (bottom-right).
+const desiredOrder = ['short-reach-optical-interconnects', 'resilient-optical-networks', 'flexible-optical-switching'];
+// Each area shows two stacked figures, matching the laboratory PPT layout.
+const figureSets: Record<string, string[]> = {
+  'short-reach-optical-interconnects': ['/images/research/short-reach-system.png', '/images/research/short-reach-measurements.png'],
+  'resilient-optical-networks': ['/images/research/resilient-ocs-topology.png', '/images/research/resilient-recovery-timeline.png'],
+  'flexible-optical-switching': ['/images/research/optical-switching-bench.png', '/images/research/optical-switching-schematic.png']
 };
+const known = desiredOrder.map((slug) => themes.find((theme) => theme.slug === slug)).filter((theme): theme is ResearchTheme => Boolean(theme));
+const ordered = [...known, ...themes.filter((theme) => !desiredOrder.includes(theme.slug))];
+const areaNames = ['short', 'resil', 'flex'];
+const areaFlags = ['High Capacity', 'High Resilience', 'High Capacity'];
+const areas = ordered.slice(0, 3).map((theme, index) => {
+  const set = figureSets[theme.slug] || [];
+  const sources = ([theme.imageUrl || set[0], set[1]].filter((src, position, list) => Boolean(src) && list.indexOf(src) === position)) as string[];
+  const figures = sources.map((src) => (src.startsWith('/') && !src.startsWith(import.meta.env.BASE_URL) ? sitePath(src) : src));
+  return { ...theme, area: areaNames[index], flag: areaFlags[index], figures };
+});
 ---
 <BaseLayout title="Research" description="OICL research in optical interconnects, flexible switching and resilient optical networks." active="research" content={content}>
-  <section class="page-hero shell"><span class="eyebrow">OICL / 研究领域</span><h1>Research<span>.</span></h1><p>Optical systems and networks for AI and 6G.</p>{pi && <p class="research-pi">Principal Investigator: Prof. {pi.name}{pi.chineseName && <span lang="zh-CN"> · {pi.chineseName}教授</span>}</p>}</section>
-  <section class="section shell research-intro"><div><span class="eyebrow">RESEARCH PROFILE</span><h2>Connecting computing through light.</h2></div><div><p>{settings.intro}</p>{settings.chineseIntro && <p class="chinese-paragraph" lang="zh-CN">{settings.chineseIntro}</p>}</div></section>
-  <section class="section section-soft"><div class="shell research-context"><div><span class="eyebrow">APPLICATION SCENARIOS / 应用场景</span><h2>{settings.applicationStatement || 'Optical Systems and Networks for AI and 6G'}</h2>{settings.applicationChinese && <p lang="zh-CN">{settings.applicationChinese}</p>}<div class="research-priorities" aria-label="Research priorities"><span>High Capacity</span><span>High Resilience</span></div>{settings.networkStandards && <p class="standards-note" lang="zh-CN">{settings.networkStandards}</p>}{pi && <div class="research-investigator"><img src={sitePath('/images/ning-deng-research.jpeg')} alt={`Prof. ${pi.name} in the laboratory presentation`} loading="lazy" /><div><span class="eyebrow">PRINCIPAL INVESTIGATOR</span><strong>Prof. {pi.name}</strong>{pi.chineseName && <span lang="zh-CN">{pi.chineseName}教授</span>}<a class="text-link" href={sitePath(`/people/${pi.slug || 'ning-deng'}/`)}>View profile ↗</a></div></div>}</div><figure class="research-system"><div class="research-system-images"><a href={sitePath('/images/research/ai-6g-optical-network.png')} target="_blank" rel="noopener noreferrer" aria-label="Open full-size optical network architecture diagram"><img src={sitePath('/images/research/ai-6g-optical-network.png')} alt="PPT diagram showing AI computing centers, data centers and 5G/6G networks connected through optical networks" loading="lazy" /></a><a href={sitePath('/images/research/ai-data-center.jpeg')} target="_blank" rel="noopener noreferrer" aria-label="Open full-size AI data center illustration"><img src={sitePath('/images/research/ai-data-center.jpeg')} alt="Illustration of an AI data center from the laboratory presentation" loading="lazy" /></a></div><figcaption>Optical network architecture and AI data center · Open images to enlarge</figcaption></figure></div></section>
-  <section class="section section-soft"><div class="shell"><div class="section-heading"><div><span class="eyebrow">THREE RESEARCH AREAS</span><h2>Where we focus</h2></div></div><div class="research-detail-list">
-    {themes.map((theme, index) => <article class="research-detail" id={theme.slug || theme.id}><div class="research-detail-art"><ResearchVisual variant={index} /></div><div><span class="card-index">0{index + 1} / 0{themes.length}</span><h3>{theme.title}</h3>{theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}<p>{theme.summary}</p>{theme.detail && <p>{theme.detail}</p>}</div>{figureSets[theme.slug] && <div class="research-figure-row">{figureSets[theme.slug].map((figure, figureIndex) => { const source = figureIndex === 0 && theme.imageUrl ? theme.imageUrl : sitePath(figure.src); const src = source.startsWith('/') && !source.startsWith(import.meta.env.BASE_URL) ? sitePath(source) : source; return <figure class="research-figure"><a href={src} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size image: ${figure.caption}`}><img src={src} alt={figureIndex === 0 ? theme.imageAlt || figure.alt : figure.alt} loading="lazy" /></a><figcaption>{figure.caption} · Open image to enlarge</figcaption></figure>; })}</div>}</article>)}
-  </div></div></section>
-  <section class="section shell scenario-panel"><span class="eyebrow">RESEARCH EXCHANGE</span><h2>From optical links to resilient networks.</h2><p>Connect with OICL to discuss optical information and communications research.</p><a class="text-link" href={sitePath('/contact/')}>Discuss the research <span aria-hidden="true">↗</span></a></section>
+  <section class="page-hero shell">
+    <div class="research-hero-grid">
+      <div>
+        <span class="eyebrow">OICL / 研究领域</span>
+        <h1>Research<span>.</span></h1>
+        <p>Optical systems and networks for AI and 6G.</p>
+      </div>
+      {pi && <figure class="research-pi-card">
+        <img src={sitePath('/images/ning-deng-research.jpeg')} alt={`Portrait of Prof. ${pi.name}`} />
+        <figcaption>
+          <span class="eyebrow">PRINCIPAL INVESTIGATOR</span>
+          <strong>Prof. {pi.name}</strong>
+          {pi.chineseName && <span class="chinese-label" lang="zh-CN">{pi.chineseName}教授</span>}
+          <a class="text-link" href={sitePath(`/people/${pi.slug || 'ning-deng'}/`)}>View profile <span aria-hidden="true">↗</span></a>
+        </figcaption>
+      </figure>}
+    </div>
+  </section>
+
+  <section class="section shell research-flow">
+    <div class="research-flow-intro">
+      <span class="eyebrow">RESEARCH PROFILE</span>
+      <p class="research-flow-lead">{settings.intro}</p>
+      {settings.chineseIntro && <p class="research-flow-lead chinese-paragraph" lang="zh-CN">{settings.chineseIntro}</p>}
+    </div>
+
+    <p class="research-flow-scenario">
+      <span class="eyebrow">APPLICATION SCENARIOS / 应用场景</span>
+      <span>{settings.applicationStatement || 'Optical Systems and Networks for AI and 6G'}{settings.applicationChinese && <span lang="zh-CN"> · {settings.applicationChinese}</span>}</span>
+      {settings.networkStandards && <span class="research-flow-standards" lang="zh-CN">{settings.networkStandards}</span>}
+    </p>
+
+    <figure class="research-scenario-figure">
+      <div class="research-scenario-images">
+        <a href={sitePath('/images/research/ai-6g-optical-network.png')} target="_blank" rel="noopener noreferrer" aria-label="Open full-size optical network architecture diagram"><img src={sitePath('/images/research/ai-6g-optical-network.png')} alt="Diagram showing AI computing centers, data centers and 5G/6G networks connected through optical networks" loading="lazy" /></a>
+        <a href={sitePath('/images/research/ai-data-center.jpeg')} target="_blank" rel="noopener noreferrer" aria-label="Open full-size AI data center illustration"><img src={sitePath('/images/research/ai-data-center.jpeg')} alt="AI data center supporting optical information and communications research" loading="lazy" /></a>
+      </div>
+    </figure>
+
+    <div class="research-map" aria-label="Key research areas around the AI optical network">
+      <div class="research-hub">
+        <div class="research-hub-shape"><strong>AI</strong><span>Optical Network</span></div>
+      </div>
+      {areas.map((theme) => <article class:list={['research-area', `research-area-${theme.area}`]} id={theme.slug}>
+        <span class="research-area-flag">{theme.flag}</span>
+        <h2>{theme.title}</h2>
+        {theme.chineseTitle && <span class="chinese-label" lang="zh-CN">{theme.chineseTitle}</span>}
+        {theme.figures.length > 0 && <div class="research-area-figures">
+          {theme.figures.map((figure, figureIndex) => <a class="research-area-figure" href={figure} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size figure: ${theme.title}`}><img src={figure} alt={figureIndex === 0 ? (theme.imageAlt || theme.title) : `${theme.title}, additional figure`} loading="lazy" /></a>)}
+        </div>}
+        <p>{theme.summary}</p>
+      </article>)}
+    </div>
+
+    <p class="research-flow-end"><a class="text-link" href={sitePath('/contact/')}>Discuss the research <span aria-hidden="true">↗</span></a></p>
+  </section>
 </BaseLayout>
