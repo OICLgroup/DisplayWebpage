@@ -195,6 +195,12 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .person-feature-copy { align-self: center; padding: 36px 48px; }
 .person-feature h3 { margin: 13px 0 0; font-size: 38px; }
 .person-feature p:not(.chinese-label) { max-width: 550px; margin: 20px 0; color: var(--muted); font-size: 15px; }
+.people-list-compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.people-list-compact .person-feature { grid-template-columns: 1fr; min-width: 0; min-height: 0; max-width: none; }
+.people-list-compact .person-image { height: 245px; }
+.people-list-compact .person-feature-copy { align-self: start; padding: 24px; }
+.people-list-compact .person-feature h3 { margin-top: 9px; font-size: clamp(22px, 2vw, 27px); line-height: 1.15; }
+.people-list-compact .person-feature p:not(.chinese-label) { margin: 14px 0 18px; font-size: 13px; }
 .empty-state { position: relative; min-height: 220px; padding: 46px; background: #fff; border: 1px dashed #c9c1c0; overflow: hidden; }
 .empty-state-large { min-height: 330px; }
 .empty-icon { display: block; color: var(--orange); font-size: 26px; }
@@ -299,6 +305,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .research-hub-shape strong { font-size: 20px; }
   .research-hub-shape span { font-size: 12px; }
   .research-area { width: min(100%, 440px); }
+  .people-list-compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .team-inner { gap: 25px; }
   .team-portrait { grid-template-columns: 45% 55%; }
 }
@@ -366,6 +373,12 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .person-feature { grid-template-columns: 1fr; }
   .person-image { height: 260px; }
   .person-feature-copy { padding: 28px; }
+  .people-list-compact { grid-template-columns: 1fr; }
+  .people-list-compact .person-feature { grid-template-columns: 105px minmax(0, 1fr); }
+  .people-list-compact .person-image { height: 100%; min-height: 175px; }
+  .people-list-compact .person-feature-copy { padding: 18px; }
+  .people-list-compact .person-feature h3 { font-size: 21px; }
+  .people-list-compact .person-feature p:not(.chinese-label) { margin: 10px 0 12px; font-size: 12px; }
   .empty-state { padding: 30px; }
   .section-nav { gap: 16px; overflow-x: auto; }
   .section-nav a { white-space: nowrap; }
