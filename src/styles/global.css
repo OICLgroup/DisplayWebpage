@@ -165,10 +165,8 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .research-flow-scenario { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 36px 0 0; padding-top: 22px; border-top: 1px solid var(--line); color: #555268; font-size: 15px; }
 .research-flow-standards { color: var(--blue); font-size: 13px; font-weight: 700; }
 .research-scenario-figure { margin: 22px 0 0; }
-.research-scenario-images { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 14px; }
-.research-scenario-images a { display: grid; min-height: 250px; place-items: center; overflow: hidden; background: #f6f5f3; border: 1px solid var(--line); }
-.research-scenario-images img { width: 100%; height: auto; }
-.research-scenario-images a:last-child img { height: 100%; object-fit: cover; }
+.research-scenario-figure a { display: block; background: #f6f5f3; border: 1px solid var(--line); }
+.research-scenario-figure img { display: block; width: 100%; height: auto; }
 .research-map { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: ". short ." "resil hub flex"; gap: 48px 30px; align-items: center; justify-items: center; margin-top: 58px; }
 .research-hub { grid-area: hub; display: grid; place-items: center; width: min(100%, 300px); }
 .research-hub-shape { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; width: 100%; aspect-ratio: 1.08; padding-bottom: 19%; background: var(--blue); color: #fff; text-align: center; clip-path: polygon(50% 2%, 99% 98%, 1% 98%); }
@@ -297,9 +295,6 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .research-hero-grid { grid-template-columns: 1fr; gap: 30px; align-items: start; }
   .research-map { grid-template-columns: 1fr; grid-template-areas: "hub" "short" "resil" "flex"; gap: 42px; }
   .research-area { width: min(100%, 440px); }
-  .research-scenario-images { grid-template-columns: 1fr; }
-  .research-scenario-images a { min-height: 0; }
-  .research-scenario-images a:last-child img { height: 240px; object-fit: cover; }
   .team-inner { gap: 25px; }
   .team-portrait { grid-template-columns: 45% 55%; }
 }
