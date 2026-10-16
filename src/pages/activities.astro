@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { activityDateLabel, getSiteContent } from '../lib/content';
+import { activityDateLabel, getSiteContent, personSlug } from '../lib/content';
+import { sitePath } from '../lib/paths';
 const content = await getSiteContent();
 const { activities } = content;
 const photos = activities.flatMap((activity) => (activity.images || []).map((image) => ({ activity, image })));
@@ -16,12 +17,13 @@ const textOnlyActivities = activities.filter((activity) => !activity.images?.len
           <figcaption>
             <time datetime={activity.date || activity.month}>{activityDateLabel(activity)}</time>
             <h2 lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.title}</h2>
+            {activity.featuredPerson?.name && <p class="activity-person">Participant: <a href={sitePath(`/people/${personSlug(activity.featuredPerson)}/`)}>{activity.featuredPerson.name}{activity.featuredPerson.chineseName && <span lang="zh-CN"> · {activity.featuredPerson.chineseName}</span>}</a></p>}
             {activity.summary && <p lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.summary}</p>}
             {activity.url && <a href={activity.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}
           </figcaption>
         </figure>
       </article>)}
     </div> : !activities.length && <div class="empty-state empty-state-large"><span class="empty-icon" aria-hidden="true">✳</span><h2>Activities are being collected</h2><p>Updates and photographs will appear here after they are prepared for publication.</p></div>}
-    {textOnlyActivities.length > 0 && <div class="activity-notes">{textOnlyActivities.map((item) => <article><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><h2 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h2>{item.summary && <p lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.summary}</p>}{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}</article>)}</div>}
+    {textOnlyActivities.length > 0 && <div class="activity-notes">{textOnlyActivities.map((item) => <article><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><h2 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h2>{item.featuredPerson?.name && <p class="activity-person">Participant: <a href={sitePath(`/people/${personSlug(item.featuredPerson)}/`)}>{item.featuredPerson.name}{item.featuredPerson.chineseName && <span lang="zh-CN"> · {item.featuredPerson.chineseName}</span>}</a></p>}{item.summary && <p lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.summary}</p>}{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}</article>)}</div>}
   </section>
 </BaseLayout>

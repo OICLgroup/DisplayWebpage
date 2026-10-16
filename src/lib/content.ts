@@ -30,6 +30,7 @@ export type Person = {
 };
 export type Activity = {
   id: string; date?: string; month?: string; title: string; summary?: string; url?: string;
+  featuredPerson?: { name: string; chineseName?: string; slug?: string };
   language?: 'en' | 'zh'; images?: { url: string; alt: string; width?: number; height?: number }[];
 };
 export type Outcome = {
@@ -55,7 +56,7 @@ function safeExternalUrl(value?: string): string | undefined {
 function cleanEmail(value?: string): string | undefined {
   return value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? value : undefined;
 }
-export function personSlug(person: Person): string {
+export function personSlug(person: Pick<Person, 'name' | 'slug'>): string {
   return person.slug || person.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 function previewContent(): SiteContent {
@@ -91,7 +92,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, language}'),
     client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}}'),
-    client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "images": images[]{"url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
+    client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "featuredPerson": featuredPerson->{name, chineseName, "slug": slug.current}, "images": images[]{"url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<ImportantLink[]>('*[_type == "importantLink"] | order(order asc, title asc){"id": _id, title, chineseTitle, url, description}')
   ]);

@@ -102,6 +102,7 @@ const newsItem = defineType({
     defineField({ name: 'date', title: 'Exact date (when known)', type: 'date' }),
     defineField({ name: 'month', title: 'Month (when only month is known)', type: 'string', description: 'Use YYYY-MM. Leave exact date empty when the day is not confirmed.', validation: (Rule) => Rule.regex(/^\d{4}-(0[1-9]|1[0-2])$/, { name: 'YYYY-MM' }) }),
     defineField({ name: 'summary', title: 'Short summary', type: 'text', rows: 3 }),
+    defineField({ name: 'featuredPerson', title: 'Person involved', type: 'reference', to: [{ type: 'person' }], description: 'Name the confirmed lab member involved in this activity. Do not infer identities from photos.' }),
     defineField({ name: 'images', title: 'Photos', type: 'array', of: [
       defineArrayMember({ type: 'image', options: { hotspot: true }, fields: [
         defineField({ name: 'alt', title: 'Alternative text', type: 'string', validation: required })
