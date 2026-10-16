@@ -73,6 +73,20 @@ const person = defineType({
     defineField({ name: 'featuredPublications', title: 'Selected publications on profile', type: 'array', of: [
       defineArrayMember({ type: 'reference', to: [{ type: 'publication' }] })
     ] }),
+    defineField({ name: 'academicRecords', title: 'Full publication and patent record', type: 'array', of: [
+      defineArrayMember({ type: 'object', name: 'academicRecord', fields: [
+        defineField({ name: 'kind', title: 'Category', type: 'string', options: { list: [
+          { title: 'Journal article', value: 'journal' },
+          { title: 'Conference paper', value: 'conference' },
+          { title: 'Patent', value: 'patent' }
+        ] }, validation: required }),
+        defineField({ name: 'citation', title: 'Citation as supplied', type: 'text', rows: 3, validation: required }),
+        urlField('url', 'Verified publication or patent URL (optional)'),
+        defineField({ name: 'language', title: 'Citation language', type: 'string', options: { list: [
+          { title: 'English', value: 'en' }, { title: 'Chinese', value: 'zh' }
+        ] }, initialValue: 'en' })
+      ], preview: { select: { title: 'citation', subtitle: 'kind' } } })
+    ] }),
     defineField({ name: 'email', title: 'Public email (optional)', type: 'email' }),
     urlField('profileUrl', 'External profile URL'),
     imageWithAlt('portrait', 'Portrait'),
@@ -85,7 +99,8 @@ const newsItem = defineType({
   name: 'newsItem', title: 'Activities', type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Headline', type: 'string', validation: required }),
-    defineField({ name: 'date', title: 'Date', type: 'date', validation: required }),
+    defineField({ name: 'date', title: 'Exact date (when known)', type: 'date' }),
+    defineField({ name: 'month', title: 'Month (when only month is known)', type: 'string', description: 'Use YYYY-MM. Leave exact date empty when the day is not confirmed.', validation: (Rule) => Rule.regex(/^\d{4}-(0[1-9]|1[0-2])$/, { name: 'YYYY-MM' }) }),
     defineField({ name: 'summary', title: 'Short summary', type: 'text', rows: 3 }),
     defineField({ name: 'images', title: 'Photos', type: 'array', of: [
       defineArrayMember({ type: 'image', options: { hotspot: true }, fields: [

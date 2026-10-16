@@ -16,15 +16,20 @@ export type Publication = {
   type: 'Journal' | 'Conference' | 'Preprint' | 'Other';
   doi?: string; url?: string; featured?: boolean; language?: 'en' | 'zh';
 };
+export type AcademicRecord = {
+  kind: 'journal' | 'conference' | 'patent'; citation: string;
+  url?: string; language?: 'en' | 'zh';
+};
 export type Person = {
   id: string; name: string; chineseName?: string; slug?: string;
   group?: 'Professors' | 'Researchers' | 'Students'; role: string;
   focus?: string; biography?: string; email?: string; profileUrl?: string;
   portraitUrl?: string; portraitAlt?: string; order?: number;
   featuredPublications?: Publication[];
+  academicRecords?: AcademicRecord[];
 };
 export type Activity = {
-  id: string; date: string; title: string; summary?: string; url?: string;
+  id: string; date?: string; month?: string; title: string; summary?: string; url?: string;
   language?: 'en' | 'zh'; images?: { url: string; alt: string }[];
 };
 export type Outcome = {
@@ -85,8 +90,8 @@ async function loadSiteContent(): Promise<SiteContent> {
     client.fetch<SiteSettings | null>('*[_type == "siteSettings"][0]{labName, chineseName, officialName, affiliation, heroStatement, intro, chineseIntro, applicationStatement, applicationChinese, networkStandards, contactEmail, location}'),
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, language}'),
-    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}}'),
-    client.fetch<Activity[]>('*[_type == "newsItem"] | order(date desc){"id": _id, date, title, summary, url, language, "images": images[]{"url": asset->url, alt}}'),
+    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}}'),
+    client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "images": images[]{"url": asset->url, alt}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<ImportantLink[]>('*[_type == "importantLink"] | order(order asc, title asc){"id": _id, title, chineseTitle, url, description}')
   ]);
@@ -99,12 +104,15 @@ async function loadSiteContent(): Promise<SiteContent> {
     ...item, email: cleanEmail(item.email), profileUrl: safeExternalUrl(item.profileUrl), portraitUrl: safeExternalUrl(item.portraitUrl),
     featuredPublications: (item.featuredPublications || []).filter((publication) => publication?.title && publication?.authors && publication?.year).map((publication) => ({
       ...publication, doi: publication.doi?.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').trim(), url: safeExternalUrl(publication.url)
+    })),
+    academicRecords: (item.academicRecords || []).filter((record) => record?.citation && ['journal', 'conference', 'patent'].includes(record.kind)).map((record) => ({
+      ...record, url: safeExternalUrl(record.url)
     }))
   }));
-  const activities = (rawActivities || []).filter((item) => item.title && item.date).map((item) => ({
+  const activities = (rawActivities || []).filter((item) => item.title && (item.date || item.month)).map((item) => ({
     ...item, url: safeExternalUrl(item.url),
     images: (item.images || []).filter((image) => safeExternalUrl(image.url) && image.alt).map((image) => ({ ...image, url: safeExternalUrl(image.url)! }))
-  }));
+  })).sort((a, b) => (b.date || b.month || '').localeCompare(a.date || a.month || ''));
   const outcomes = (rawOutcomes || []).filter((item) => item.title && item.summary && (item.kind === 'Prototype' || item.kind === 'Application')).map((item) => ({
     ...item, url: safeExternalUrl(item.url), imageUrl: safeExternalUrl(item.imageUrl)
   }));
@@ -128,4 +136,12 @@ export function publicationUrl(publication: Publication): string | undefined {
     return `https://doi.org/${encodeURIComponent(publication.doi).replace(/%2F/gi, '/')}`;
   }
   return publication.url;
+}
+export function activityDateLabel(activity: Activity): string {
+  const value = activity.date || activity.month;
+  if (!value || !/^\d{4}-(0[1-9]|1[0-2])(?:-\d{2})?$/.test(value)) return '';
+  const date = new Date(`${activity.date || `${activity.month}-01`}T00:00:00Z`);
+  return date.toLocaleDateString('en-US', activity.date
+    ? { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }
+    : { year: 'numeric', month: 'long', timeZone: 'UTC' });
 }

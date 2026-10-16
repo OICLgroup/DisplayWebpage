@@ -4,7 +4,7 @@ import SectionHeading from '../components/SectionHeading.astro';
 import HeroVisual from '../components/HeroVisual.astro';
 import ResearchVisual from '../components/ResearchVisual.astro';
 import PublicationItem from '../components/PublicationItem.astro';
-import { getSiteContent, personSlug } from '../lib/content';
+import { activityDateLabel, getSiteContent, personSlug } from '../lib/content';
 import { sitePath } from '../lib/paths';
 
 const content = await getSiteContent();
@@ -66,7 +66,7 @@ const portrait = pi?.portraitUrl?.startsWith('/') ? sitePath(pi.portraitUrl) : p
     </div>
   </section>}
 
-  {activities.length > 0 && <section class="section shell"><SectionHeading eyebrow="04 / ACTIVITIES" title="From the lab" href="/activities/" linkText="View activities" /><div class="activity-teasers">{activities.slice(0, 2).map((item) => <a href={sitePath('/activities/')}><time datetime={item.date}>{item.date}</time><h3>{item.title}</h3><span aria-hidden="true">↗</span></a>)}</div></section>}
+  {activities.length > 0 && <section class="section shell"><SectionHeading eyebrow="04 / ACTIVITIES" title="From the lab" href="/activities/" linkText="View activities" /><div class="activity-teasers">{activities.slice(0, 2).map((item) => <a href={sitePath('/activities/')}><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><h3 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h3><span aria-hidden="true">↗</span></a>)}</div></section>}
 
   <section class="contact-callout"><div class="shell contact-callout-inner"><div><span class="eyebrow">CONNECT / 交流与招聘</span><h2>Let's build what comes next<span>.</span></h2><p>For research exchange and collaboration with OICL.</p></div><a class="button button-light" href={sitePath('/contact/')}>Get in touch <span aria-hidden="true">↗</span></a></div></section>
 </BaseLayout>
