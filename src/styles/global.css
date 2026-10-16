@@ -346,6 +346,10 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .research-hub-shape { width: clamp(150px, 43vw, 180px); }
   .research-hub-shape strong { font-size: 18px; }
   .research-hub-shape span { font-size: 10px; }
+  .person-feature { grid-template-columns: clamp(145px, 33vw, 200px) minmax(0, 1fr); min-height: 0; }
+  .person-image { height: auto; aspect-ratio: 4 / 5; align-self: start; }
+  .person-feature-copy { padding: 24px; }
+  .person-feature h3 { font-size: 30px; }
   .people-list-compact { grid-template-columns: 1fr; }
   .people-list-compact .person-feature { grid-template-columns: clamp(105px, 24vw, 145px) minmax(0, 1fr); }
   .people-list-compact .person-image { height: auto; min-height: 0; align-self: start; }
