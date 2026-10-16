@@ -70,6 +70,9 @@ const person = defineType({
     defineField({ name: 'role', title: 'Role', type: 'string', validation: required }),
     defineField({ name: 'focus', title: 'Research focus', type: 'text', rows: 2 }),
     defineField({ name: 'biography', title: 'Short English biography', type: 'text', rows: 5 }),
+    defineField({ name: 'featuredPublications', title: 'Selected publications on profile', type: 'array', of: [
+      defineArrayMember({ type: 'reference', to: [{ type: 'publication' }] })
+    ] }),
     defineField({ name: 'email', title: 'Public email (optional)', type: 'email' }),
     urlField('profileUrl', 'External profile URL'),
     imageWithAlt('portrait', 'Portrait'),

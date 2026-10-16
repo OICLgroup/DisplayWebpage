@@ -21,6 +21,7 @@ export type Person = {
   group?: 'Professors' | 'Researchers' | 'Students'; role: string;
   focus?: string; biography?: string; email?: string; profileUrl?: string;
   portraitUrl?: string; portraitAlt?: string; order?: number;
+  featuredPublications?: Publication[];
 };
 export type Activity = {
   id: string; date: string; title: string; summary?: string; url?: string;
@@ -84,7 +85,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     client.fetch<SiteSettings | null>('*[_type == "siteSettings"][0]{labName, chineseName, officialName, affiliation, heroStatement, intro, chineseIntro, applicationStatement, applicationChinese, networkStandards, contactEmail, location}'),
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, language}'),
-    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order}'),
+    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}}'),
     client.fetch<Activity[]>('*[_type == "newsItem"] | order(date desc){"id": _id, date, title, summary, url, language, "images": images[]{"url": asset->url, alt}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<ImportantLink[]>('*[_type == "importantLink"] | order(order asc, title asc){"id": _id, title, chineseTitle, url, description}')
@@ -95,7 +96,10 @@ async function loadSiteContent(): Promise<SiteContent> {
     ...item, url: safeExternalUrl(item.url), doi: item.doi?.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').trim()
   }));
   const people = (rawPeople || []).filter((item) => item.name && item.role).map((item) => ({
-    ...item, email: cleanEmail(item.email), profileUrl: safeExternalUrl(item.profileUrl), portraitUrl: safeExternalUrl(item.portraitUrl)
+    ...item, email: cleanEmail(item.email), profileUrl: safeExternalUrl(item.profileUrl), portraitUrl: safeExternalUrl(item.portraitUrl),
+    featuredPublications: (item.featuredPublications || []).filter((publication) => publication?.title && publication?.authors && publication?.year).map((publication) => ({
+      ...publication, doi: publication.doi?.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').trim(), url: safeExternalUrl(publication.url)
+    }))
   }));
   const activities = (rawActivities || []).filter((item) => item.title && item.date).map((item) => ({
     ...item, url: safeExternalUrl(item.url),
