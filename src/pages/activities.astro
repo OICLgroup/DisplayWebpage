@@ -3,8 +3,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { activityDateLabel, getSiteContent } from '../lib/content';
 const content = await getSiteContent();
 const { activities } = content;
+const photos = activities.flatMap((activity) => (activity.images || []).map((image) => ({ activity, image })));
+const textOnlyActivities = activities.filter((activity) => !activity.images?.length);
 ---
 <BaseLayout title="Activities" description="Research and life at OICL." active="activities" content={content}>
   <section class="page-hero shell"><span class="eyebrow">OICL / 研究与生活</span><h1>Activities<span>.</span></h1><p>Updates from our research community, shared as they happen.</p></section>
-  <section class="section shell">{activities.length ? <div class="activity-list">{activities.map((item) => <article class="activity-item"><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><div><h2 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h2>{item.language === 'zh' && <span class="language-tag">Chinese only</span>}{item.summary && <p lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.summary}</p>}{item.images && item.images.length > 0 && <div class="activity-images">{item.images.map((image) => <img src={image.url} alt={image.alt} loading="lazy" />)}</div>}{item.url && <a class="text-link" href={item.url} target="_blank" rel="noopener noreferrer">More information <span aria-hidden="true">↗</span></a>}</div></article>)}</div> : <div class="empty-state empty-state-large"><span class="empty-icon" aria-hidden="true">✳</span><h2>Activities are being collected</h2><p>Updates and photographs will appear here after they are prepared for publication.</p></div>}</section>
+  <section class="section shell">
+    {photos.length ? <div class="activity-gallery" aria-label="OICL activity photos">
+      {photos.map(({ activity, image }) => <article class="activity-photo">
+        <figure>
+          <img src={image.url} alt={image.alt} loading="lazy" decoding="async" />
+          <figcaption>
+            <time datetime={activity.date || activity.month}>{activityDateLabel(activity)}</time>
+            <h2 lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.title}</h2>
+            {activity.summary && <p lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.summary}</p>}
+            {activity.url && <a href={activity.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}
+          </figcaption>
+        </figure>
+      </article>)}
+    </div> : !activities.length && <div class="empty-state empty-state-large"><span class="empty-icon" aria-hidden="true">✳</span><h2>Activities are being collected</h2><p>Updates and photographs will appear here after they are prepared for publication.</p></div>}
+    {textOnlyActivities.length > 0 && <div class="activity-notes">{textOnlyActivities.map((item) => <article><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><h2 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h2>{item.summary && <p lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.summary}</p>}{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}</article>)}</div>}
+  </section>
 </BaseLayout>
