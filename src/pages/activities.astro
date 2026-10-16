@@ -12,7 +12,7 @@ const textOnlyActivities = activities.filter((activity) => !activity.images?.len
     {photos.length ? <div class="activity-gallery" aria-label="OICL activity photos">
       {photos.map(({ activity, image }) => <article class="activity-photo">
         <figure>
-          <img src={image.url} alt={image.alt} loading="lazy" decoding="async" />
+          <img src={image.url} alt={image.alt} width={image.width} height={image.height} loading="lazy" decoding="async" />
           <figcaption>
             <time datetime={activity.date || activity.month}>{activityDateLabel(activity)}</time>
             <h2 lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.title}</h2>
