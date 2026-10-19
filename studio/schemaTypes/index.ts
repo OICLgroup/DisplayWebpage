@@ -78,6 +78,7 @@ const person = defineType({
         defineField({ name: 'kind', title: 'Category', type: 'string', options: { list: [
           { title: 'Journal article', value: 'journal' },
           { title: 'Conference paper', value: 'conference' },
+          { title: 'Book chapter', value: 'book' },
           { title: 'Patent', value: 'patent' }
         ] }, validation: required }),
         defineField({ name: 'citation', title: 'Citation as supplied', type: 'text', rows: 3, validation: required }),

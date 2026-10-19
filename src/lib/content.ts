@@ -17,7 +17,7 @@ export type Publication = {
   doi?: string; url?: string; featured?: boolean; language?: 'en' | 'zh';
 };
 export type AcademicRecord = {
-  kind: 'journal' | 'conference' | 'patent'; citation: string;
+  kind: 'journal' | 'conference' | 'book' | 'patent'; citation: string;
   url?: string; language?: 'en' | 'zh';
 };
 export type Person = {
@@ -106,7 +106,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     featuredPublications: (item.featuredPublications || []).filter((publication) => publication?.title && publication?.authors && publication?.year).map((publication) => ({
       ...publication, doi: publication.doi?.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').trim(), url: safeExternalUrl(publication.url)
     })),
-    academicRecords: (item.academicRecords || []).filter((record) => record?.citation && ['journal', 'conference', 'patent'].includes(record.kind)).map((record) => ({
+    academicRecords: (item.academicRecords || []).filter((record) => record?.citation && ['journal', 'conference', 'book', 'patent'].includes(record.kind)).map((record) => ({
       ...record, url: safeExternalUrl(record.url)
     }))
   }));
