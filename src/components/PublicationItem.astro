@@ -4,13 +4,14 @@ type Props = { publication: Publication; compact?: boolean };
 const { publication, compact = false } = Astro.props;
 const href = publicationUrl(publication);
 const authorRecord = /\(accepted\)/i.test(publication.venue) && !publication.doi;
+const conferenceProgramme = /^https:\/\/(?:www\.)?ecoc2026\.org\//i.test(href || '');
 ---
 <article class:list={['publication-item', { compact }]}>
   <div class="publication-year">{publication.year}</div>
   <div class="publication-main">
-    <div class="publication-meta"><span>{publication.type || 'Publication'}</span><span class="meta-separator"></span><span>{publication.venue}</span>{publication.language === 'zh' && <span class="language-tag">Chinese only</span>}{authorRecord && <span class="language-tag">Author record</span>}</div>
+    <div class="publication-meta"><span>{publication.type || 'Publication'}</span><span class="meta-separator"></span><span>{publication.venue}</span>{publication.language === 'zh' && <span class="language-tag">Chinese only</span>}{authorRecord && <span class="language-tag">Author record</span>}{conferenceProgramme && <span class="language-tag">Conference programme</span>}</div>
     <h3 lang={publication.language === 'zh' ? 'zh-CN' : undefined}>{publication.title}</h3>
     <p>{publication.authors}</p>
   </div>
-  {href && <a class="publication-link" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${authorRecord ? 'Open author record for' : 'Open publication source for'} ${publication.title}`}><span aria-hidden="true">↗</span></a>}
+  {href && <a class="publication-link" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${conferenceProgramme ? 'Open conference programme entry for' : authorRecord ? 'Open author record for' : 'Open publication source for'} ${publication.title}`}><span aria-hidden="true">↗</span></a>}
 </article>
