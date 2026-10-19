@@ -63,7 +63,7 @@ const publication = defineType({
 const person = defineType({
   name: 'person', title: 'People', type: 'document',
   fields: [
-    defineField({ name: 'name', title: 'English / romanized name', type: 'string', description: 'Use given name first, family name last (for example, Chen Cao for 陈操). Keep publication author lists in their published citation format.', validation: required }),
+    defineField({ name: 'name', title: 'English / romanized name', type: 'string', description: 'Use given name first, family name last (for example, Cao Chen for 陈操). Keep publication author lists in their published citation format.', validation: required }),
     defineField({ name: 'chineseName', title: 'Chinese name (optional)', type: 'string' }),
     defineField({ name: 'slug', title: 'Profile URL', type: 'slug', options: { source: 'name' } }),
     defineField({ name: 'group', title: 'People group', type: 'string', options: { list: ['Professors', 'Researchers', 'Students'] }, initialValue: 'Researchers' }),
