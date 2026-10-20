@@ -233,6 +233,8 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .profile-record-list li { padding: 18px 15px 18px 3px; border-bottom: 1px solid var(--line); line-height: 1.65; }
 .profile-record-list li::marker { color: #a5370f; font-size: 13px; font-weight: 800; }
 .profile-record-list p { max-width: 980px; margin: 0; overflow-wrap: anywhere; font-size: 15px; }
+.profile-record-list .profile-record-title { color: var(--ink); font-weight: 700; }
+.profile-record-list .profile-record-meta { margin-top: 5px; color: var(--muted); font-size: 14px; }
 .profile-record-list a { display: inline-block; margin-top: 8px; color: var(--blue); font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
 .section-nav { display: flex; gap: 30px; padding-block: 21px; border-bottom: 1px solid var(--line); }
 .section-nav a { color: var(--blue); font-size: 13px; font-weight: 800; }
