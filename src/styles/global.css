@@ -261,16 +261,13 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .outcome-copy { padding: 27px; }
 .outcome-copy h3 { margin: 10px 0 12px; font-size: 27px; }
 .outcome-copy p { color: var(--muted); font-size: 14px; }
-.activity-group + .activity-group { margin-top: 56px; }
-.activity-group-heading { margin-bottom: 22px; border-bottom: 1px solid var(--line); }
-.activity-group-heading h2 { margin: 0 0 17px; font-size: clamp(24px, 2.5vw, 32px); line-height: 1.2; }
 .activity-gallery { columns: 3; column-gap: 16px; }
 .activity-photo { display: inline-block; width: 100%; margin: 0 0 20px; break-inside: avoid; vertical-align: top; }
 .activity-photo figure { margin: 0; }
 .activity-photo img { display: block; width: 100%; height: auto; background: #eeeceb; }
 .activity-photo figcaption { padding: 10px 2px 0; border-top: 2px solid var(--orange); }
 .activity-photo time, .activity-notes time { display: block; color: #a5370f; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.activity-photo h3 { margin: 4px 0 0; font-size: 14px; font-weight: 700; line-height: 1.4; letter-spacing: -.015em; }
+.activity-photo h2 { margin: 4px 0 0; font-size: 14px; font-weight: 700; line-height: 1.4; letter-spacing: -.015em; }
 .activity-photo p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .activity-photo .activity-person, .activity-notes .activity-person { color: var(--ink); font-size: 11px; font-weight: 650; }
 .activity-person a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }

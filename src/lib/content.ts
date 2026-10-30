@@ -35,8 +35,7 @@ export type Person = {
 export type Activity = {
   id: string; date?: string; month?: string; title: string; summary?: string; url?: string;
   featuredPerson?: { name: string; chineseName?: string; slug?: string };
-  language?: 'en' | 'zh'; showOnWebsite?: boolean; spotlight?: boolean;
-  images?: { url: string; alt: string; width?: number; height?: number; showOnWebsite?: boolean }[];
+  language?: 'en' | 'zh'; images?: { url: string; alt: string; width?: number; height?: number }[];
 };
 export type Outcome = {
   id: string; kind: 'Prototype' | 'Application'; title: string; summary: string;
@@ -97,7 +96,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, hideFromOutcomes, language}'),
     client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}, "researchProjects": researchProjects[]{title,year,note,language}}'),
-    client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, showOnWebsite, spotlight, "featuredPerson": featuredPerson->{name, chineseName, "slug": slug.current}, "images": images[]{"url": asset->url, alt, showOnWebsite, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
+    client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "featuredPerson": featuredPerson->{name, chineseName, "slug": slug.current}, "images": images[]{"url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<ImportantLink[]>('*[_type == "importantLink"] | order(order asc, title asc){"id": _id, title, chineseTitle, url, description}')
   ]);
@@ -116,10 +115,10 @@ async function loadSiteContent(): Promise<SiteContent> {
     })),
     researchProjects: (item.researchProjects || []).filter((project) => project?.title)
   }));
-  const activities = (rawActivities || []).filter((item) => item.showOnWebsite !== false && item.title && (item.date || item.month)).map((item) => ({
+  const activities = (rawActivities || []).filter((item) => item.title && (item.date || item.month)).map((item) => ({
     ...item, url: safeExternalUrl(item.url),
-    images: (item.images || []).filter((image) => image.showOnWebsite !== false && safeExternalUrl(image.url) && image.alt).map((image) => ({ ...image, url: safeExternalUrl(image.url)! }))
-  })).sort((a, b) => Number(Boolean(b.spotlight)) - Number(Boolean(a.spotlight)) || (b.date || b.month || '').localeCompare(a.date || a.month || ''));
+    images: (item.images || []).filter((image) => safeExternalUrl(image.url) && image.alt).map((image) => ({ ...image, url: safeExternalUrl(image.url)! }))
+  })).sort((a, b) => (b.date || b.month || '').localeCompare(a.date || a.month || ''));
   const outcomes = (rawOutcomes || []).filter((item) => item.title && item.summary && (item.kind === 'Prototype' || item.kind === 'Application')).map((item) => ({
     ...item, url: safeExternalUrl(item.url), imageUrl: safeExternalUrl(item.imageUrl)
   }));
