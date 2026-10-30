@@ -5,25 +5,33 @@ import { sitePath } from '../lib/paths';
 const content = await getSiteContent();
 const { activities } = content;
 const photos = activities.flatMap((activity) => (activity.images || []).map((image) => ({ activity, image })));
+const galleries = [
+  { title: 'Group and PI activities', photos: photos.filter(({ activity }) => activity.spotlight) },
+  { title: 'Individual highlights', photos: photos.filter(({ activity }) => !activity.spotlight) }
+].filter((gallery) => gallery.photos.length);
 const textOnlyActivities = activities.filter((activity) => !activity.images?.length);
 ---
 <BaseLayout title="Activities" description="Research and life at OICL." active="activities" content={content}>
-  <section class="page-hero shell"><span class="eyebrow">OICL / 研究与生活</span><h1>Activities<span>.</span></h1><p>Updates from our research community, shared as they happen.</p></section>
+  <section class="page-hero shell"><span class="eyebrow">OICL / 研究与生活</span><h1>Activities<span>.</span></h1><p>Group events and selected individual moments from our research community.</p></section>
   <section class="section shell">
-    {photos.length ? <div class="activity-gallery" aria-label="OICL activity photos">
-      {photos.map(({ activity, image }) => <article class="activity-photo">
+    {galleries.map((gallery) => <section class="activity-group" aria-label={gallery.title}>
+      <div class="activity-group-heading"><h2>{gallery.title}</h2></div>
+      <div class="activity-gallery">
+      {gallery.photos.map(({ activity, image }) => <article class="activity-photo">
         <figure>
           <img src={image.url.startsWith('https://cdn.sanity.io/images/') ? `${image.url}?w=1200&auto=format` : image.url} alt={image.alt} width={image.width} height={image.height} loading="lazy" decoding="async" />
           <figcaption>
             <time datetime={activity.date || activity.month}>{activityDateLabel(activity)}</time>
-            <h2 lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.title}</h2>
+            <h3 lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.title}</h3>
             {activity.featuredPerson?.name && <p class="activity-person">Participant: <a href={sitePath(`/people/${personSlug(activity.featuredPerson)}/`)}>{activity.featuredPerson.name}{activity.featuredPerson.chineseName && <span lang="zh-CN"> · {activity.featuredPerson.chineseName}</span>}</a></p>}
             {activity.summary && <p lang={activity.language === 'zh' ? 'zh-CN' : undefined}>{activity.summary}</p>}
             {activity.url && <a href={activity.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}
           </figcaption>
         </figure>
       </article>)}
-    </div> : !activities.length && <div class="empty-state empty-state-large"><span class="empty-icon" aria-hidden="true">✳</span><h2>Activities are being collected</h2><p>Updates and photographs will appear here after they are prepared for publication.</p></div>}
+      </div>
+    </section>)}
+    {!activities.length && <div class="empty-state empty-state-large"><span class="empty-icon" aria-hidden="true">✳</span><h2>Activities are being collected</h2><p>Updates and photographs will appear here after they are prepared for publication.</p></div>}
     {textOnlyActivities.length > 0 && <div class="activity-notes">{textOnlyActivities.map((item) => <article><time datetime={item.date || item.month}>{activityDateLabel(item)}</time><h2 lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.title}</h2>{item.featuredPerson?.name && <p class="activity-person">Participant: <a href={sitePath(`/people/${personSlug(item.featuredPerson)}/`)}>{item.featuredPerson.name}{item.featuredPerson.chineseName && <span lang="zh-CN"> · {item.featuredPerson.chineseName}</span>}</a></p>}{item.summary && <p lang={item.language === 'zh' ? 'zh-CN' : undefined}>{item.summary}</p>}{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">More information ↗</a>}</article>)}</div>}
   </section>
 </BaseLayout>

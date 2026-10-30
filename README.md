@@ -38,6 +38,7 @@ The Sanity project is **`gd1we79o`**, with a public `production` dataset. The ed
 
 3. In Studio, open **Site settings** and enter verified facts. Add Research themes, Publications and People. The updated local schema also supports prototypes, applications, dated activities with photos, and important links. Upload images with meaningful alternative text.
    For a publication that should remain in a person profile but not appear on Outcomes, enable **Hide from Outcomes** in its publication record.
+   In Activities, use **Featured group or PI activity** to place confirmed group and PI events before individual highlights. **Show on website** can hide an activity or one photo while keeping it in Sanity.
 4. After changing the Studio schema or editor interface, run `npm run studio:deploy` from the repository root to rebuild and update the hosted Studio. This requires an authorized Sanity CLI login. Ordinary content edits are saved directly in Sanity and do not require a Studio redeploy.
 5. Sanity project settings must allow the deployed website's origin for any future browser-side features. The current website reads published content only during its server-side build.
 
@@ -124,6 +125,7 @@ Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。�
 
 3. 在 Studio 的 **Site settings** 中填写已核实的信息，再添加研究方向、论文和成员。新版本地结构还支持原型、应用、带照片的活动和重要链接。上传图片时须填写有意义的替代文字。
    论文需要保留在个人主页、但不显示于 Outcomes 时，在该论文记录中启用 **Hide from Outcomes**。
+   Activities 中可用 **Featured group or PI activity** 将经确认的集体或 PI 活动排在个人照片前；活动及单张照片均可用 **Show on website** 暂停展示，资料仍保留在 Sanity。
 4. 如果修改了 Studio 的内容结构或编辑界面，在仓库根目录运行 `npm run studio:deploy`，重新构建并更新线上 Studio；这需要已授权的 Sanity CLI 登录。平常编辑资料直接存入 Sanity，无需重新部署 Studio。
 5. 若将来添加浏览器端读取 Sanity 的功能，需要在 Sanity 项目设置中允许已部署网站的来源地址。当前网站仅在服务端构建时读取已发布的内容。
 

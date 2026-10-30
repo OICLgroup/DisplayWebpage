@@ -115,9 +115,12 @@ const newsItem = defineType({
     defineField({ name: 'month', title: 'Month (when only month is known)', type: 'string', description: 'Use YYYY-MM. Leave exact date empty when the day is not confirmed.', validation: (Rule) => Rule.regex(/^\d{4}-(0[1-9]|1[0-2])$/, { name: 'YYYY-MM' }) }),
     defineField({ name: 'summary', title: 'Short summary', type: 'text', rows: 3 }),
     defineField({ name: 'featuredPerson', title: 'Person involved', type: 'reference', to: [{ type: 'person' }], description: 'Name the confirmed lab member involved in this activity. Do not infer identities from photos.' }),
+    defineField({ name: 'showOnWebsite', title: 'Show on website', type: 'boolean', initialValue: true, description: 'Turn off to keep an activity in Sanity without showing it on the website.' }),
+    defineField({ name: 'spotlight', title: 'Featured group or PI activity', type: 'boolean', initialValue: false, description: 'Show confirmed group activities and PI events before individual highlights.' }),
     defineField({ name: 'images', title: 'Photos', type: 'array', of: [
       defineArrayMember({ type: 'image', options: { hotspot: true }, fields: [
-        defineField({ name: 'alt', title: 'Alternative text', type: 'string', validation: required })
+        defineField({ name: 'alt', title: 'Alternative text', type: 'string', validation: required }),
+        defineField({ name: 'showOnWebsite', title: 'Show this photo on website', type: 'boolean', initialValue: true, description: 'Turn off for a duplicate or less representative photo while retaining the asset in Sanity.' })
       ] })
     ] }),
     urlField('url', 'More information URL'),
