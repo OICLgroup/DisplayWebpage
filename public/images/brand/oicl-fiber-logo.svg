@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 180" role="img" aria-labelledby="title desc">
+  <title id="title">OICL 光纤 Logo</title>
+  <desc id="desc">以 OICL 为主体，O 用同心环与橙色光点表现光纤截面，下方列出实验室中英文全称。</desc>
+  <g fill="none" stroke="#0d00b2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="61" cy="61" r="37" stroke-width="13"/>
+    <circle cx="61" cy="61" r="22" stroke-width="3"/>
+    <path d="M136 24v74" stroke-width="13"/>
+    <path d="M250 35A37 37 0 1 0 250 87" stroke-width="13"/>
+    <path d="M305 24v74h60" stroke-width="13"/>
+  </g>
+  <circle cx="61" cy="61" r="10" fill="#ff4a05"/>
+  <rect x="18" y="130" width="4" height="38" rx="2" fill="#ff4a05"/>
+  <text x="35" y="144" fill="#0d00b2" font-family="Segoe UI, Aptos, Arial, sans-serif" font-size="15" font-weight="650" letter-spacing=".15">Optical Information and Communications Laboratory</text>
+  <text x="35" y="166" fill="#0d00b2" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="15" font-weight="600" letter-spacing="1.5">光信息通信实验室</text>
+</svg>

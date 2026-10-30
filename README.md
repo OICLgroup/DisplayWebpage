@@ -4,7 +4,7 @@ An English-first, static Astro website for OICL. A separate Sanity Studio lets e
 
 ## October 2026 redesign
 
-The site follows the laboratory PPT: **Optical Information and Communications Laboratory**, three AI-computing research areas, and the Home / Research / People / Outcomes / Activities / Links / Contact navigation. Its visual system uses GBU's Ignition Orange (`#ff4a05`) and Quantum Blue (`#0d00b2`). The PPT portrait and research figures are published with alternative text and full-size links. Empty sections indicate that content is still being collected.
+The site follows the laboratory PPT: **Optical Information and Communications Laboratory**, three AI-computing research areas, and the Home / Research / People / Outcomes / Activities / Links / Contact navigation. Its visual system uses GBU's Ignition Orange (`#ff4a05`) and Quantum Blue (`#0d00b2`). The adopted OICL fiber logo appears in the site header, footer and favicon; its SVG assets are in `public/images/brand/`. The PPT portrait and research figures are published with alternative text and full-size links. Empty sections indicate that content is still being collected.
 
 Run `npm run dev` and open the URL printed by Astro (this repository's `SITE_URL` uses the `/DisplayWebpage/` base path). Preview mode reads the local PPT sample content even if a Sanity project ID is configured. Set `CONTENT_SOURCE=sanity` locally to inspect published CMS records. Production builds always read Sanity and never use sample content. The public website is [OICL on GitHub Pages](https://spsp6.github.io/DisplayWebpage/).
 
@@ -89,7 +89,7 @@ The website production dependency audit currently reports no findings. Sanity St
 
 ## 2026 年 10 月改版
 
-网站依据实验室 PPT，采用正式英文名称 **Optical Information and Communications Laboratory**、三个面向 AI 算力的研究方向，以及 Home / Research / People / Outcomes / Activities / Links / Contact 栏目。视觉以启明橙（`#ff4a05`）为主、量子蓝（`#0d00b2`）为辅。PPT 中的肖像和研究图片已展示在网站，附替代文字和原图入口；尚未收集到资料的栏目会明确显示待更新状态。
+网站依据实验室 PPT，采用正式英文名称 **Optical Information and Communications Laboratory**、三个面向 AI 算力的研究方向，以及 Home / Research / People / Outcomes / Activities / Links / Contact 栏目。视觉以启明橙（`#ff4a05`）为主、量子蓝（`#0d00b2`）为辅。已选定的 OICL 光纤 Logo 用于网站页眉、页脚和 favicon，SVG 资源位于 `public/images/brand/`。PPT 中的肖像和研究图片已展示在网站，附替代文字和原图入口；尚未收集到资料的栏目会明确显示待更新状态。
 
 运行 `npm run dev` 后打开 Astro 输出的地址；当前 `SITE_URL` 使用 `/DisplayWebpage/` 路径。预览模式默认读取本地 PPT 示例资料，即使配置了 Sanity 项目 ID 也是如此；若想在本地查看现有 CMS 数据，可设置 `CONTENT_SOURCE=sanity`。正式版构建始终读取 Sanity，绝不使用示例资料。公开网址为 [OICL GitHub Pages](https://spsp6.github.io/DisplayWebpage/)。
 

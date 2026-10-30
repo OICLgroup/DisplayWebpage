@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 405 122" role="img" aria-labelledby="title desc">
+  <title id="title">OICL 光纤字标</title>
+  <desc id="desc">OICL 字样中的 O 由两层蓝色同心环和一个橙色光点构成，表现光纤截面的包层、纤芯与传输中的光；ICL 保持清晰字形。</desc>
+  <g fill="none" stroke="#0d00b2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="61" cy="61" r="37" stroke-width="13"/>
+    <circle cx="61" cy="61" r="22" stroke-width="3"/>
+    <path d="M136 24v74" stroke-width="13"/>
+    <path d="M250 35A37 37 0 1 0 250 87" stroke-width="13"/>
+    <path d="M305 24v74h60" stroke-width="13"/>
+  </g>
+  <circle cx="61" cy="61" r="10" fill="#ff4a05"/>
+</svg>
