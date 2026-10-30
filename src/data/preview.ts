@@ -77,7 +77,7 @@ export const previewPeople: Person[] = [
 export const previewActivities: Activity[] = [];
 export const previewOutcomes: Outcome[] = [];
 export const previewLinks: ImportantLink[] = [
-  { id: 'dg-key-lab', title: 'Dongguan Key Laboratory', description: 'Institutional link to be confirmed.' },
+  { id: 'dg-key-lab', title: 'Dongguan Key Laboratory of Intelligence and Information Technology', chineseTitle: '东莞市智能信息技术重点实验室', description: 'Official laboratory profile.', url: 'https://scit.gbu.edu.cn/lab_35.html' },
   { id: 'gbu', title: 'Great Bay University', chineseTitle: '大湾区大学', url: 'https://www.gbu.edu.cn/' },
-  { id: 'school-cit', title: 'School of Computing and Information Technology', description: 'Institutional link to be confirmed.' }
+  { id: 'school-cit', title: 'School of Computing and Information Technology', chineseTitle: '信息科学技术学院', description: 'Official school homepage.', url: 'https://scit.gbu.edu.cn/' }
 ];
