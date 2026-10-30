@@ -40,7 +40,10 @@ const nav = [
     <header class="site-header">
       <div class="shell header-inner">
         <a class="brand" href={sitePath('/')} aria-label="OICL home">
-          <span class="brand-copy"><img class="brand-logo" src={sitePath('/images/brand/oicl-fiber-wordmark.svg')} alt="" width="405" height="122" /><small>{settings.officialName || 'Optical Communications Research'}</small></span>
+          <span class="brand-copy">
+            <img class="brand-logo" src={sitePath('/images/brand/oicl-fiber-wordmark.svg')} alt="" width="405" height="122" />
+            <span class="brand-title"><span class="brand-title-text"><strong>{settings.officialName || 'Optical Information and Communications Laboratory'}</strong>{settings.chineseName && <span lang="zh-CN">{settings.chineseName}</span>}</span></span>
+          </span>
         </a>
         <nav class="desktop-nav" aria-label="Main navigation">
           {nav.map((item) => <a href={sitePath(item.href)} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
@@ -57,9 +60,12 @@ const nav = [
     <footer class="site-footer">
       <div class="shell footer-inner">
         <div class="footer-identity">
-          <a class="footer-brand" href={sitePath('/')} aria-label="OICL home"><img src={sitePath('/images/brand/oicl-fiber-wordmark.svg')} alt="" width="405" height="122" /></a>
-          <p>{settings.officialName || settings.labName}</p>
-          {settings.chineseName && <p lang="zh-CN">{settings.chineseName}</p>}
+          <a class="footer-brand" href={sitePath('/')} aria-label="OICL home">
+            <span class="brand-copy">
+              <img class="brand-logo" src={sitePath('/images/brand/oicl-fiber-wordmark.svg')} alt="" width="405" height="122" />
+              <span class="brand-title"><span class="brand-title-text"><strong>{settings.officialName || settings.labName}</strong>{settings.chineseName && <span lang="zh-CN">{settings.chineseName}</span>}</span></span>
+            </span>
+          </a>
           <p>{settings.affiliation}</p>
         </div>
         <nav class="footer-links" aria-label="Footer navigation">
