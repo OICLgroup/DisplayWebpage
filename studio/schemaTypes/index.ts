@@ -55,7 +55,8 @@ const publication = defineType({
     defineField({ name: 'doi', title: 'DOI', type: 'string', description: 'Enter the DOI only, for example 10.1234/example.', validation: (Rule) => Rule.regex(/^10\.\d{4,9}\/\S+$/, { name: 'DOI' }) }),
     urlField('url', 'Original source URL (when no DOI)'),
     defineField({ name: 'language', title: 'Title language', type: 'string', options: { list: [{ title: 'English', value: 'en' }, { title: 'Chinese', value: 'zh' }] }, initialValue: 'en' }),
-    defineField({ name: 'featured', title: 'Feature on home page', type: 'boolean', initialValue: false })
+    defineField({ name: 'featured', title: 'Feature on home page', type: 'boolean', initialValue: false }),
+    defineField({ name: 'hideFromOutcomes', title: 'Hide from Outcomes', type: 'boolean', description: 'Keep this publication in Sanity and in any person profile, but omit it from the Outcomes publication list.', initialValue: false })
   ],
   preview: { select: { title: 'title', subtitle: 'venue' } }
 });

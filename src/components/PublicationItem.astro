@@ -9,7 +9,7 @@ const conferenceProgramme = /^https:\/\/(?:www\.)?ecoc2026\.org\//i.test(href ||
 <article class:list={['publication-item', { compact }]}>
   <div class="publication-year">{publication.year}</div>
   <div class="publication-main">
-    <div class="publication-meta"><span>{publication.type || 'Publication'}</span><span class="meta-separator"></span><span>{publication.venue}</span>{publication.language === 'zh' && <span class="language-tag">Chinese only</span>}{authorRecord && <span class="language-tag">Author record</span>}{conferenceProgramme && <span class="language-tag">Conference programme</span>}</div>
+    <div class="publication-meta"><span>{publication.type || 'Publication'}</span><span class="meta-separator"></span><span>{publication.venue}</span>{publication.language === 'zh' && <span class="language-tag">Chinese only</span>}{authorRecord && <span class="language-tag">Author record</span>}</div>
     <h3 lang={publication.language === 'zh' ? 'zh-CN' : undefined}>{publication.title}</h3>
     <p>{publication.authors}</p>
   </div>

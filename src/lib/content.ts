@@ -14,7 +14,7 @@ export type ResearchTheme = {
 export type Publication = {
   id: string; title: string; authors: string; year: number; venue: string;
   type: 'Journal' | 'Conference' | 'Preprint' | 'Other';
-  doi?: string; url?: string; featured?: boolean; language?: 'en' | 'zh';
+  doi?: string; url?: string; featured?: boolean; hideFromOutcomes?: boolean; language?: 'en' | 'zh';
 };
 export type AcademicRecord = {
   kind: 'journal' | 'conference' | 'book' | 'patent'; citation: string;
@@ -94,7 +94,7 @@ async function loadSiteContent(): Promise<SiteContent> {
   const [rawSettings, rawThemes, rawPublications, rawPeople, rawActivities, rawOutcomes, rawLinks] = await Promise.all([
     client.fetch<SiteSettings | null>('*[_type == "siteSettings"][0]{labName, chineseName, officialName, affiliation, heroStatement, intro, chineseIntro, applicationStatement, applicationChinese, networkStandards, contactEmail, location}'),
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
-    client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, language}'),
+    client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, hideFromOutcomes, language}'),
     client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}, "researchProjects": researchProjects[]{title,year,note,language}}'),
     client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "featuredPerson": featuredPerson->{name, chineseName, "slug": slug.current}, "images": images[]{"url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),

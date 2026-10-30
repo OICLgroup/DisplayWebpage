@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PublicationItem from '../components/PublicationItem.astro';
 import { getSiteContent, type Outcome } from '../lib/content';
 const content = await getSiteContent();
-const { publications, outcomes } = content;
+const { outcomes } = content;
+const publications = content.publications.filter((item) => !item.hideFromOutcomes);
 const years = [...new Set(publications.map((item) => item.year))].sort((a, b) => b - a);
 const categories = [
   { id: 'prototypes', title: 'Prototypes', kind: 'Prototype' },
