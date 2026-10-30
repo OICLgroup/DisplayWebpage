@@ -195,7 +195,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .person-feature-copy { align-self: center; padding: 36px 48px; }
 .person-feature h3 { margin: 13px 0 0; font-size: 38px; }
 .person-feature p:not(.chinese-label) { max-width: 550px; margin: 20px 0; color: var(--ink); font-size: 17px; font-weight: 700; line-height: 1.5; }
-.people-list-compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.people-list-compact { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .people-list-compact .person-feature { grid-template-columns: 1fr; min-width: 0; min-height: 0; max-width: none; }
 .people-list-compact .person-image { height: auto; aspect-ratio: 4 / 5; }
 .people-list-compact .person-image img { object-position: center 24%; }
@@ -203,8 +203,8 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .people-list-compact .person-feature h3 { margin-top: 9px; font-size: clamp(22px, 2vw, 27px); line-height: 1.15; }
 .people-list-compact .person-feature p:not(.chinese-label) { margin: 14px 0 18px; font-size: 16px; }
 @media (min-width: 701px) {
-  .people-list-compact .person-image { aspect-ratio: 8 / 5; background: var(--soft); }
-  .people-list-compact .person-image img { object-fit: contain; object-position: center; }
+  .people-list-compact .person-image { position: relative; aspect-ratio: 4 / 5; }
+  .people-list-compact .person-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 24%; }
 }
 .empty-state { position: relative; min-height: 220px; padding: 46px; background: #fff; border: 1px dashed #c9c1c0; overflow: hidden; }
 .empty-state-large { min-height: 330px; }
@@ -305,6 +305,9 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .footer-end { display: flex; flex-direction: column; align-items: end; gap: 20px; padding-top: 8px; }
 .footer-end small { color: #747080; }
 
+@media (max-width: 1250px) {
+  .people-list-compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 1120px) {
   .shell { width: min(100% - 54px, 1260px); }
   .brand { min-width: 285px; max-width: 320px; }
