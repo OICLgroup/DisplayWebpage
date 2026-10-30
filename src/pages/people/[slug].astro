@@ -17,6 +17,8 @@ const relatedPublications = person.featuredPublications?.length
     ? content.publications.filter((item) => /\bDeng\b/i.test(item.authors))
     : [];
 const academicRecords = person.academicRecords || [];
+const researchProjects = person.researchProjects || [];
+const longBiography = (person.biography?.length || 0) > 500;
 
 type RecordKind = AcademicRecord['kind'] | 'standard' | 'other';
 type ProfileEntry = { kind: RecordKind; record?: AcademicRecord; publication?: Publication };
@@ -57,8 +59,23 @@ function sourceLabel(url: string, citation?: string): string {
   <section class="profile-header shell"><a class="back-link" href={sitePath('/people/')}>← All people</a><span class="eyebrow">{person.group || 'PEOPLE'} / OICL</span><h1>{person.name}<span>.</span></h1>{person.chineseName && <p class="profile-chinese" lang="zh-CN">{person.chineseName}</p>}<p class="profile-role">{person.role}</p></section>
   <section class="section shell profile-layout">
     <aside class="profile-aside"><div class="profile-portrait">{portrait ? <img src={portrait} alt={person.portraitAlt || `Portrait of ${person.name}`} /> : <span aria-hidden="true">{person.name.split(/\s+/).map((part) => part[0]).join('')}</span>}</div><div class="profile-contact">{person.email && <a href={`mailto:${person.email}`}>Email <span aria-hidden="true">↗</span></a>}{person.profileUrl && <a href={person.profileUrl} target="_blank" rel="noopener noreferrer">External profile <span aria-hidden="true">↗</span></a>}</div></aside>
-    <div class="profile-main">{person.biography && <><span class="eyebrow">ABOUT</span><p class="profile-bio">{person.biography}</p></>}{person.focus && <div class="profile-focus"><span class="eyebrow">RESEARCH FOCUS</span><p>{person.focus}</p></div>}</div>
+    <div class="profile-main">{person.biography && <><span class="eyebrow">ABOUT</span><p class:list={['profile-bio', { 'profile-bio-long': longBiography }]}>{person.biography}</p></>}{person.focus && <div class="profile-focus"><span class="eyebrow">RESEARCH FOCUS</span><p>{person.focus}</p></div>}</div>
   </section>
+  {researchProjects.length > 0 && (
+    <section class="section shell profile-projects">
+      <span class="eyebrow">RESEARCH PROJECTS</span>
+      <h2>Research projects</h2>
+      <ul>
+        {researchProjects.map((project) => <li>
+          {project.year && <span class="profile-project-year">{project.year}</span>}
+          <div lang={project.language === 'zh' ? 'zh-CN' : undefined}>
+            <h3>{project.title}</h3>
+            {project.note && <p>{project.note}</p>}
+          </div>
+        </li>)}
+      </ul>
+    </section>
+  )}
   {profileEntries.length > 0 && (
     <section class="section section-soft profile-record-section">
       <div class="shell">

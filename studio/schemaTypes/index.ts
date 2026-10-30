@@ -88,6 +88,16 @@ const person = defineType({
         ] }, initialValue: 'en' })
       ], preview: { select: { title: 'citation', subtitle: 'kind' } } })
     ] }),
+    defineField({ name: 'researchProjects', title: 'Research projects', type: 'array', of: [
+      defineArrayMember({ type: 'object', name: 'researchProject', fields: [
+        defineField({ name: 'title', title: 'Original project title', type: 'string', validation: required }),
+        defineField({ name: 'year', title: 'Year', type: 'number' }),
+        defineField({ name: 'note', title: 'Funding / role (as supplied)', type: 'string' }),
+        defineField({ name: 'language', title: 'Title language', type: 'string', options: { list: [
+          { title: 'English', value: 'en' }, { title: 'Chinese', value: 'zh' }
+        ] }, initialValue: 'en' })
+      ], preview: { select: { title: 'title', subtitle: 'note' } } })
+    ] }),
     defineField({ name: 'email', title: 'Public email (optional)', type: 'email' }),
     urlField('profileUrl', 'External profile URL'),
     imageWithAlt('portrait', 'Portrait'),

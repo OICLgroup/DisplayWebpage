@@ -20,6 +20,9 @@ export type AcademicRecord = {
   kind: 'journal' | 'conference' | 'book' | 'patent'; citation: string;
   url?: string; language?: 'en' | 'zh';
 };
+export type ResearchProject = {
+  title: string; year?: number; note?: string; language?: 'en' | 'zh';
+};
 export type Person = {
   id: string; name: string; chineseName?: string; slug?: string;
   group?: 'Professors' | 'Researchers' | 'Students'; role: string;
@@ -27,6 +30,7 @@ export type Person = {
   portraitUrl?: string; portraitAlt?: string; order?: number;
   featuredPublications?: Publication[];
   academicRecords?: AcademicRecord[];
+  researchProjects?: ResearchProject[];
 };
 export type Activity = {
   id: string; date?: string; month?: string; title: string; summary?: string; url?: string;
@@ -91,7 +95,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     client.fetch<SiteSettings | null>('*[_type == "siteSettings"][0]{labName, chineseName, officialName, affiliation, heroStatement, intro, chineseIntro, applicationStatement, applicationChinese, networkStandards, contactEmail, location}'),
     client.fetch<ResearchTheme[]>('*[_type == "researchTheme" && active != false] | order(order asc, title asc){"id": _id, title, chineseTitle, "slug": slug.current, summary, detail, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<Publication[]>('*[_type == "publication"] | order(year desc, title asc){"id": _id, title, authors, year, venue, type, doi, url, featured, language}'),
-    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}}'),
+    client.fetch<Person[]>('*[_type == "person"] | order(order asc, name asc){"id": _id, name, chineseName, "slug": slug.current, group, role, focus, biography, email, profileUrl, "portraitUrl": portrait.asset->url, "portraitAlt": portrait.alt, order, "featuredPublications": featuredPublications[]->{"id": _id, title, authors, year, venue, type, doi, url, featured, language}, "academicRecords": academicRecords[]{kind,citation,url,language}, "researchProjects": researchProjects[]{title,year,note,language}}'),
     client.fetch<Activity[]>('*[_type == "newsItem"]{"id": _id, date, month, title, summary, url, language, "featuredPerson": featuredPerson->{name, chineseName, "slug": slug.current}, "images": images[]{"url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height}}'),
     client.fetch<Outcome[]>('*[_type == "outcome"] | order(year desc, order asc){"id": _id, kind, title, summary, year, url, language, "imageUrl": image.asset->url, "imageAlt": image.alt}'),
     client.fetch<ImportantLink[]>('*[_type == "importantLink"] | order(order asc, title asc){"id": _id, title, chineseTitle, url, description}')
@@ -108,7 +112,8 @@ async function loadSiteContent(): Promise<SiteContent> {
     })),
     academicRecords: (item.academicRecords || []).filter((record) => record?.citation && ['journal', 'conference', 'book', 'patent'].includes(record.kind)).map((record) => ({
       ...record, url: safeExternalUrl(record.url)
-    }))
+    })),
+    researchProjects: (item.researchProjects || []).filter((project) => project?.title)
   }));
   const activities = (rawActivities || []).filter((item) => item.title && (item.date || item.month)).map((item) => ({
     ...item, url: safeExternalUrl(item.url),
