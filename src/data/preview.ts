@@ -65,7 +65,7 @@ export const previewPublications: Publication[] = [
 export const previewPeople: Person[] = [
   {
     id: 'ning-deng', name: 'Ning Deng', chineseName: '邓宁', slug: 'ning-deng', group: 'Professors', role: 'Professor · Principal Investigator',
-    focus: 'Optical communications, optical switching and networks for AI computing',
+    focus: 'Optical communications, optical switching and networks for AI computing.',
     biography: 'Dr. Ning Deng is currently a Full Professor at Great Bay University (GBU) and Director of the Dongguan Key Laboratory of Intelligence and Information Technology. He is a Fellow of Optica (formerly OSA), Associate Editor of the Journal of Optical Communications and Networking (JOCN), and editor of multiple ITU-T and CCSA standards. Before joining GBU, he was a Technology Expert at Huawei for about 15 years, making significant contributions to optical switching networks, high-speed transmission systems, and advanced display and lighting for vehicles. He has more than 70 patents granted or pending and has published about 85 papers in refereed conferences and journals.',
     portraitUrl: '/images/ning-deng.jpeg',
     portraitAlt: 'Portrait of Prof. Ning Deng',
