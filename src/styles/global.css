@@ -194,7 +194,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .person-image span { font-size: 70px; font-weight: 800; color: #8988a0; }
 .person-feature-copy { align-self: center; padding: 36px 48px; }
 .person-feature h3 { margin: 13px 0 0; font-size: 38px; }
-.person-feature p:not(.chinese-label) { max-width: 550px; margin: 20px 0; color: var(--ink); font-size: 17px; font-weight: 700; line-height: 1.5; hyphens: manual; }
+.person-feature p:not(.chinese-label) { max-width: 550px; margin: 20px 0; color: var(--ink); font-size: 17px; font-weight: 700; line-height: 1.5; }
 .people-list-compact { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .people-list-compact .person-feature { grid-template-columns: 1fr; min-width: 0; min-height: 0; max-width: none; }
 .people-list-compact .person-image { width: 50%; margin: 24px auto 0; height: auto; aspect-ratio: 4 / 5; }
@@ -210,7 +210,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .empty-state-large { min-height: 330px; }
 .empty-icon { display: block; color: var(--orange); font-size: 26px; }
 .empty-state h2, .empty-state h3 { margin: 18px 0 8px; font-size: 28px; }
-.empty-state p { max-width: 500px; margin: 0; color: var(--muted); font-size: 14px; hyphens: manual; }
+.empty-state p { max-width: 500px; margin: 0; color: var(--muted); font-size: 14px; }
 .profile-header { padding-block: 38px 42px; border-bottom: 1px solid var(--line); }
 .back-link { display: block; width: fit-content; margin-bottom: 24px; color: var(--blue); font-size: 12px; font-weight: 800; }
 .profile-header h1 { margin: 10px 0 0; font-size: clamp(44px, 5vw, 68px); line-height: 1.04; }
@@ -223,17 +223,17 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .profile-portrait > span { display: grid; place-items: center; min-height: 300px; font-size: 74px; font-weight: 800; }
 .profile-contact { display: grid; gap: 11px; padding-top: 20px; }
 .profile-contact a { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 12px 0; color: var(--blue); font-size: 13px; font-weight: 800; }
-.profile-bio { max-width: 720px; margin: 18px 0 35px; font-size: clamp(20px, 2.3vw, 28px); line-height: 1.5; font-weight: 550; hyphens: manual; }
+.profile-bio { max-width: 720px; margin: 18px 0 35px; font-size: clamp(20px, 2.3vw, 28px); line-height: 1.5; font-weight: 550; }
 .profile-bio-long { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.65; }
 .profile-focus { border-top: 1px solid var(--line); padding-top: 27px; }
-.profile-focus p { margin-top: 13px; color: var(--ink); font-size: 20px; font-weight: 700; line-height: 1.5; hyphens: manual; }
+.profile-focus p { margin-top: 13px; color: var(--ink); font-size: 20px; font-weight: 700; line-height: 1.5; }
 .profile-projects { padding-top: 0; }
 .profile-projects h2 { margin: 10px 0 24px; font-size: clamp(25px, 3vw, 34px); }
 .profile-projects ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
 .profile-projects li { display: flex; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
 .profile-project-year { flex: 0 0 54px; color: #a5370f; font-size: 14px; font-weight: 800; }
 .profile-projects h3 { margin: 0; font-size: 18px; line-height: 1.5; }
-.profile-projects p { margin: 8px 0 0; color: var(--muted); font-size: 14px; hyphens: manual; }
+.profile-projects p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
 .profile-record-section .section-heading p { max-width: 680px; color: var(--muted); font-size: 14px; }
 .profile-record-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 25px 0 45px; }
 .profile-record-nav a { padding: 11px 15px; border: 1px solid var(--line); background: #fff; color: var(--blue); font-size: 13px; font-weight: 800; }
@@ -244,7 +244,13 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .profile-record-list { margin: 0; padding-left: 33px; border-top: 1px solid var(--line); }
 .profile-record-list li { padding: 18px 15px 18px 3px; border-bottom: 1px solid var(--line); line-height: 1.65; }
 .profile-record-list li::marker { color: #a5370f; font-size: 13px; font-weight: 800; }
-.profile-record-list p { max-width: 980px; margin: 0; overflow-wrap: anywhere; hyphens: manual; font-size: 15px; }
+.profile-record-list p { max-width: 980px; margin: 0; overflow-wrap: anywhere; font-size: 15px; }
+.person-feature p:not(.chinese-label),
+.profile-bio,
+.profile-focus p,
+.profile-projects p,
+.profile-record-list p:lang(en),
+.profile-record-section .section-heading p { text-align: justify; }
 .profile-record-list .profile-record-title { color: var(--ink); font-weight: 700; }
 .profile-record-list .profile-record-meta { margin-top: 5px; color: var(--muted); font-size: 14px; }
 .profile-record-list a { display: inline-block; margin-top: 8px; color: var(--blue); font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }

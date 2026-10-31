@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getSiteContent, personSlug, publicationUrl, type AcademicRecord, type Person, type Publication, type SiteContent } from '../../lib/content';
 import { sitePath } from '../../lib/paths';
-import { hyphenateText } from '../../lib/hyphenate';
 
 export async function getStaticPaths() {
   const content = await getSiteContent();
@@ -60,7 +59,7 @@ function sourceLabel(url: string, citation?: string): string {
   <section class="profile-header shell"><a class="back-link" href={sitePath('/people/')}>← All people</a><span class="eyebrow">{person.group || 'PEOPLE'} / OICL</span><h1>{person.name}<span>.</span></h1>{person.chineseName && <p class="profile-chinese" lang="zh-CN">{person.chineseName}</p>}<p class="profile-role">{person.role}</p></section>
   <section class="section shell profile-layout">
     <aside class="profile-aside"><div class="profile-portrait">{portrait ? <img src={portrait} alt={person.portraitAlt || `Portrait of ${person.name}`} /> : <span aria-hidden="true">{person.name.split(/\s+/).map((part) => part[0]).join('')}</span>}</div><div class="profile-contact">{person.email && <a href={`mailto:${person.email}`}>Email <span aria-hidden="true">↗</span></a>}{person.profileUrl && <a href={person.profileUrl} target="_blank" rel="noopener noreferrer">External profile <span aria-hidden="true">↗</span></a>}</div></aside>
-    <div class="profile-main">{person.biography && <><span class="eyebrow">ABOUT</span><p class:list={['profile-bio', { 'profile-bio-long': longBiography }]}>{hyphenateText(person.biography)}</p></>}{person.focus && <div class="profile-focus"><span class="eyebrow">RESEARCH FOCUS</span><p>{hyphenateText(person.focus)}</p></div>}</div>
+    <div class="profile-main">{person.biography && <><span class="eyebrow">ABOUT</span><p class:list={['profile-bio', { 'profile-bio-long': longBiography }]}>{person.biography}</p></>}{person.focus && <div class="profile-focus"><span class="eyebrow">RESEARCH FOCUS</span><p>{person.focus}</p></div>}</div>
   </section>
   {researchProjects.length > 0 && (
     <section class="section shell profile-projects">
@@ -71,7 +70,7 @@ function sourceLabel(url: string, citation?: string): string {
           {project.year && <span class="profile-project-year">{project.year}</span>}
           <div lang={project.language === 'zh' ? 'zh-CN' : undefined}>
             <h3>{project.title}</h3>
-            {project.note && <p>{hyphenateText(project.note)}</p>}
+            {project.note && <p>{project.note}</p>}
           </div>
         </li>)}
       </ul>
@@ -96,8 +95,8 @@ function sourceLabel(url: string, citation?: string): string {
                 const { record, publication } = entry;
                 const url = record?.url || (publication ? publicationUrl(publication) : undefined);
                 return <li lang={record?.language === 'zh' || publication?.language === 'zh' ? 'zh-CN' : undefined}>
-                  {record && <p>{hyphenateText(record.citation)}</p>}
-                  {publication && <><p class="profile-record-title">{hyphenateText(publication.title)}</p><p class="profile-record-meta">{publication.authors} · {publication.venue} · {publication.year}</p></>}
+                  {record && <p>{record.citation}</p>}
+                  {publication && <><p class="profile-record-title">{publication.title}</p><p class="profile-record-meta">{publication.authors} · {publication.venue} · {publication.year}</p></>}
                   {url && <a href={url} target="_blank" rel="noopener noreferrer">{sourceLabel(url, record?.citation || publication?.venue)} <span aria-hidden="true">↗</span></a>}
                 </li>;
               })}
