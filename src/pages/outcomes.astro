@@ -4,8 +4,17 @@ import PublicationItem from '../components/PublicationItem.astro';
 import { getSiteContent, type Outcome } from '../lib/content';
 const content = await getSiteContent();
 const { outcomes } = content;
-const publications = content.publications.filter((item) => !item.hideFromOutcomes);
-const years = [...new Set(publications.map((item) => item.year))].sort((a, b) => b - a);
+const isNingDengPaper = (item: (typeof content.publications)[number]) =>
+  (item.type === 'Journal' || item.type === 'Conference') && /\bN\.?\s+Deng\b/i.test(item.authors);
+const publications = content.publications.filter((item) =>
+  !item.hideFromOutcomes && (item.year > 2023 || isNingDengPaper(item))
+);
+const recentYears = [...new Set(publications.filter((item) => item.year > 2023).map((item) => item.year))].sort((a, b) => b - a);
+const earlierItems = publications.filter((item) => item.year <= 2023);
+const publicationGroups = [
+  ...recentYears.map((year) => ({ id: `year-${year}`, title: String(year), items: publications.filter((item) => item.year === year), earlier: false })),
+  ...(earlierItems.length ? [{ id: 'year-2023-and-earlier', title: '2023 and Earlier', items: earlierItems, earlier: true }] : [])
+];
 const categories = [
   { id: 'prototypes', title: 'Prototypes', kind: 'Prototype' },
   { id: 'applications', title: 'Applications', kind: 'Application' }
@@ -14,8 +23,8 @@ const categories = [
 <BaseLayout title="Outcomes" description="OICL publications, prototypes and applications." active="outcomes" content={content}>
   <section class="page-hero shell"><span class="eyebrow">OICL / 研究成果</span><h1>Outcomes<span>.</span></h1><p>Publications, prototypes and applications emerging from our research.</p></section>
   <nav class="section-nav shell" aria-label="Outcome categories"><a href="#publications">Publications</a><a href="#prototypes">Prototypes</a><a href="#applications">Applications</a></nav>
-  <section class="section shell" id="publications"><div class="section-heading"><div><span class="eyebrow">01 / OUTCOMES</span><h2>Publications</h2><p>Research records organized by year. Source links appear where confirmed.</p></div></div>
-    {years.length ? <div class="year-groups">{years.map((year) => <section class="year-group" aria-labelledby={`year-${year}`}><h3 id={`year-${year}`}>{year}</h3><div class="publication-list">{publications.filter((item) => item.year === year).map((item) => <PublicationItem publication={item} />)}</div></section>)}</div> : <div class="empty-state"><h3>Publication list in preparation</h3><p>Confirmed citations will be added here.</p></div>}
+  <section class="section shell" id="publications"><div class="section-heading"><div><span class="eyebrow">01 / OUTCOMES</span><h2>Publications</h2><p>Recent records by year; earlier papers are grouped together. Source links appear where confirmed.</p></div></div>
+    {publicationGroups.length ? <div class="year-groups">{publicationGroups.map((group) => <section class="year-group" aria-labelledby={group.id}><h3 id={group.id}>{group.title}</h3><div class="publication-list">{group.items.map((item) => <PublicationItem publication={item} showYearInMeta={group.earlier} />)}</div></section>)}</div> : <div class="empty-state"><h3>Publication list in preparation</h3><p>Confirmed citations will be added here.</p></div>}
   </section>
   {categories.map((category, index) => {
     const items = outcomes.filter((item): item is Outcome => item.kind === category.kind);
