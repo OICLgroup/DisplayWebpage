@@ -6,7 +6,7 @@ An English-first, static Astro website for OICL. A separate Sanity Studio lets e
 
 The site follows the laboratory PPT: **Optical Information and Communications Laboratory**, three AI-computing research areas, and the Home / Research / People / Outcomes / Activities / Links / Contact navigation. Its visual system uses GBU's Ignition Orange (`#ff4a05`) and Quantum Blue (`#0d00b2`). The adopted OICL fiber logo appears in the site header, footer and favicon; its SVG assets are in `public/images/brand/`. The PPT portrait and research figures are published with alternative text and full-size links. Empty sections indicate that content is still being collected.
 
-Run `npm run dev` and open the URL printed by Astro (this repository's `SITE_URL` uses the `/DisplayWebpage/` base path). Preview mode reads the local PPT sample content even if a Sanity project ID is configured. Set `CONTENT_SOURCE=sanity` locally to inspect published CMS records. Production builds always read Sanity and never use sample content. The public website is [OICL on GitHub Pages](https://spsp6.github.io/DisplayWebpage/).
+Run `npm run dev` and open the URL printed by Astro (this repository's `SITE_URL` uses the `/DisplayWebpage/` base path). Preview mode reads the local PPT sample content even if a Sanity project ID is configured. Set `CONTENT_SOURCE=sanity` locally to inspect published CMS records. Production builds always read Sanity and never use sample content. The public website is [OICL on GitHub Pages](https://oiclgroup.github.io/DisplayWebpage/).
 
 ## Current state
 
@@ -55,7 +55,7 @@ Set `PUBLICATION_MODE=production` and `SITE_URL` to the canonical public HTTPS U
 
 ## Publishing flow
 
-The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages.yml`, targeting the public `spsp6/DisplayWebpage` repository. Choose **GitHub Actions** in **Settings → Pages**. The workflow defaults to `https://spsp6.github.io/DisplayWebpage/`; set a repository `SITE_URL` variable only if using a custom domain. Set `SANITY_PROJECT_ID` and optionally `SANITY_DATASET` as repository variables; set `SANITY_READ_TOKEN` as a repository secret only for a private dataset. The URL path determines Astro's base path, so repository pages and custom-domain root pages both work.
+The frontend is prepared for **GitHub Pages** in `.github/workflows/deploy-pages.yml`, targeting the public `OICLgroup/DisplayWebpage` repository. Choose **GitHub Actions** in **Settings → Pages**. The workflow derives the default URL from the repository owner and name (`https://oiclgroup.github.io/DisplayWebpage/`); set a repository `SITE_URL` variable only if using a custom domain. Set `SANITY_PROJECT_ID` and optionally `SANITY_DATASET` as repository variables; set `SANITY_READ_TOKEN` as a repository secret only for a private dataset. The URL path determines Astro's base path, so repository pages and custom-domain root pages both work.
 
 The workflow runs on pushes to `main`, manually from the Actions tab, or via a `sanity-published` repository-dispatch event. It always builds with `PUBLICATION_MODE=production`; missing verified Sanity content stops the build. Ordinary Sanity content edits do **not** automatically deploy until a webhook is configured or the workflow is run manually. To automate them, configure a Sanity webhook for published changes to POST `{"event_type":"sanity-published"}` to GitHub's repository-dispatch endpoint using a carefully scoped GitHub token; keep the token in Sanity's private webhook settings.
 
@@ -92,7 +92,7 @@ The website production dependency audit currently reports no findings. Sanity St
 
 网站依据实验室 PPT，采用正式英文名称 **Optical Information and Communications Laboratory**、三个面向 AI 算力的研究方向，以及 Home / Research / People / Outcomes / Activities / Links / Contact 栏目。视觉以启明橙（`#ff4a05`）为主、量子蓝（`#0d00b2`）为辅。已选定的 OICL 光纤 Logo 用于网站页眉、页脚和 favicon，SVG 资源位于 `public/images/brand/`。PPT 中的肖像和研究图片已展示在网站，附替代文字和原图入口；尚未收集到资料的栏目会明确显示待更新状态。
 
-运行 `npm run dev` 后打开 Astro 输出的地址；当前 `SITE_URL` 使用 `/DisplayWebpage/` 路径。预览模式默认读取本地 PPT 示例资料，即使配置了 Sanity 项目 ID 也是如此；若想在本地查看现有 CMS 数据，可设置 `CONTENT_SOURCE=sanity`。正式版构建始终读取 Sanity，绝不使用示例资料。公开网址为 [OICL GitHub Pages](https://spsp6.github.io/DisplayWebpage/)。
+运行 `npm run dev` 后打开 Astro 输出的地址；当前 `SITE_URL` 使用 `/DisplayWebpage/` 路径。预览模式默认读取本地 PPT 示例资料，即使配置了 Sanity 项目 ID 也是如此；若想在本地查看现有 CMS 数据，可设置 `CONTENT_SOURCE=sanity`。正式版构建始终读取 Sanity，绝不使用示例资料。公开网址为 [OICL GitHub Pages](https://oiclgroup.github.io/DisplayWebpage/)。
 
 ## 当前状态
 
@@ -141,7 +141,7 @@ Sanity 项目 ID 为 **`gd1we79o`**，使用公开的 `production` 数据集。�
 
 ## 发布流程
 
-前端已在 `.github/workflows/deploy-pages.yml` 中准备好 **GitHub Pages** 发布流程，目标为公开仓库 `spsp6/DisplayWebpage`。在仓库的 **Settings → Pages** 中选择 **GitHub Actions** 作为构建来源。工作流默认使用 `https://spsp6.github.io/DisplayWebpage/`；仅在使用自定义域名时设置仓库变量 `SITE_URL`。将 `SANITY_PROJECT_ID` 及可选的 `SANITY_DATASET` 设置为仓库变量。仅在使用私有数据集时，把 `SANITY_READ_TOKEN` 设置为仓库 Secret。程序会根据网址中的路径自动处理 GitHub 项目页或自定义域名根路径。
+前端已在 `.github/workflows/deploy-pages.yml` 中准备好 **GitHub Pages** 发布流程，目标为公开仓库 `OICLgroup/DisplayWebpage`。在仓库的 **Settings → Pages** 中选择 **GitHub Actions** 作为构建来源。工作流根据仓库所有者和名称生成默认网址（`https://oiclgroup.github.io/DisplayWebpage/`）；仅在使用自定义域名时设置仓库变量 `SITE_URL`。将 `SANITY_PROJECT_ID` 及可选的 `SANITY_DATASET` 设置为仓库变量。仅在使用私有数据集时，把 `SANITY_READ_TOKEN` 设置为仓库 Secret。程序会根据网址中的路径自动处理 GitHub 项目页或自定义域名根路径。
 
 工作流在代码推送到 `main` 时运行，也可从 Actions 页面**手动运行**，或通过 `sanity-published` 仓库分发事件触发，始终以 `PUBLICATION_MODE=production` 构建。若 Sanity 中缺少经核实的内容，构建会停止。一般的 Sanity 资料修改不会自动部署；需手动重跑工作流，或配置 Sanity webhook。配置 webhook 时，应使用权限范围尽量小的 GitHub 令牌，向仓库分发接口发送 `{"event_type":"sanity-published"}`，并只将令牌保存在 Sanity 私有设置中。
 
