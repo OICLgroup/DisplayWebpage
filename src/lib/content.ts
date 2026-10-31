@@ -115,7 +115,7 @@ async function loadSiteContent(): Promise<SiteContent> {
     })),
     researchProjects: (item.researchProjects || []).filter((project) => project?.title)
   }));
-  const activities = (rawActivities || []).filter((item) => item.title && (item.date || item.month)).map((item) => ({
+  const activities = (rawActivities || []).filter((item) => item.title && (item.date || item.month || item.images?.length)).map((item) => ({
     ...item, url: safeExternalUrl(item.url),
     images: (item.images || []).filter((image) => safeExternalUrl(image.url) && image.alt).map((image) => ({ ...image, url: safeExternalUrl(image.url)! }))
   })).sort((a, b) => (b.date || b.month || '').localeCompare(a.date || a.month || ''));
