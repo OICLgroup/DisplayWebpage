@@ -18,6 +18,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.5",
+    "hyphenation.en-us": "^0.2.1",
+    "hypher": "^0.2.5",
     "typescript": "^5.9.3",
     "vite": "^8.3.4"
   }
