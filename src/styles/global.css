@@ -197,7 +197,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .person-feature p:not(.chinese-label) { max-width: 550px; margin: 20px 0; color: var(--ink); font-size: 17px; font-weight: 700; line-height: 1.5; }
 .people-list-compact { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .people-list-compact .person-feature { grid-template-columns: 1fr; min-width: 0; min-height: 0; max-width: none; }
-.people-list-compact .person-image { height: auto; aspect-ratio: 4 / 5; }
+.people-list-compact .person-image { width: 50%; margin: 24px auto 0; height: auto; aspect-ratio: 4 / 5; }
 .people-list-compact .person-image img { object-position: center 24%; }
 .people-list-compact .person-feature-copy { align-self: start; padding: 24px; }
 .people-list-compact .person-feature h3 { margin-top: 9px; font-size: clamp(22px, 2vw, 27px); line-height: 1.15; }
@@ -245,6 +245,11 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .profile-record-list li { padding: 18px 15px 18px 3px; border-bottom: 1px solid var(--line); line-height: 1.65; }
 .profile-record-list li::marker { color: #a5370f; font-size: 13px; font-weight: 800; }
 .profile-record-list p { max-width: 980px; margin: 0; overflow-wrap: anywhere; font-size: 15px; }
+.profile-bio,
+.profile-focus p,
+.profile-projects p,
+.profile-record-list p:lang(en),
+.profile-record-section .section-heading p { text-align: justify; }
 .profile-record-list .profile-record-title { color: var(--ink); font-weight: 700; }
 .profile-record-list .profile-record-meta { margin-top: 5px; color: var(--muted); font-size: 14px; }
 .profile-record-list a { display: inline-block; margin-top: 8px; color: var(--blue); font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
@@ -396,7 +401,7 @@ section[id], article[id] { scroll-margin-top: 30px; }
   .person-feature h3 { font-size: 30px; }
   .people-list-compact { grid-template-columns: 1fr; }
   .people-list-compact .person-feature { grid-template-columns: clamp(105px, 24vw, 145px) minmax(0, 1fr); }
-  .people-list-compact .person-image { height: auto; min-height: 0; align-self: start; }
+  .people-list-compact .person-image { width: 100%; margin: 0; height: auto; min-height: 0; align-self: start; }
   .people-list-compact .person-feature-copy { padding: 18px; }
   .people-list-compact .person-feature h3 { font-size: 21px; }
   .people-list-compact .person-feature p:not(.chinese-label) { margin: 10px 0 12px; font-size: 15px; }
