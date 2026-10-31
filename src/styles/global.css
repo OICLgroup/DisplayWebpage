@@ -245,7 +245,6 @@ section[id], article[id] { scroll-margin-top: 30px; }
 .profile-record-list li { padding: 18px 15px 18px 3px; border-bottom: 1px solid var(--line); line-height: 1.65; }
 .profile-record-list li::marker { color: #a5370f; font-size: 13px; font-weight: 800; }
 .profile-record-list p { max-width: 980px; margin: 0; overflow-wrap: anywhere; font-size: 15px; }
-.person-feature p:not(.chinese-label),
 .profile-bio,
 .profile-focus p,
 .profile-projects p,
